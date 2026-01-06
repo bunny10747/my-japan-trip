@@ -3,126 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>北海道自駕 2026</title>
+    <title>北海道自駕極簡 App</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #FBFBFB; }
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(230, 230, 230, 0.5); }
-        .nav-active { color: #2D3436; font-weight: 700; border-top: 2px solid #2D3436; }
-        .tab-content { display: none; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background-color: #F8F9FA; color: #333; }
+        .glass-card { background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #EEE; margin-bottom: 12px; }
+        .tab-content { display: none; padding: 16px; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .nav-btn.active { color: #000; font-weight: 900; }
+        .nav-btn.active i { transform: scale(1.1); color: #000; }
     </style>
 </head>
 <body class="pb-24">
 
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 p-4">
-        <h1 class="text-xl font-light tracking-widest text-center text-gray-800">HOKKAIDO 2026</h1>
-        <div class="text-center text-xs text-gray-400 mt-1">2026/01/11 - 01/16</div>
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center">
+        <h1 class="text-lg font-bold tracking-tighter">HOKKAIDO 2026</h1>
+        <span class="text-[10px] bg-black text-white px-2 py-1 rounded-full">自駕模式</span>
     </header>
 
-    <main class="max-w-md mx-auto p-4">
+    <main class="max-w-md mx-auto">
         
-        <div id="schedule" class="tab-content active space-y-6">
-            <section class="space-y-3">
-                <div class="flex justify-between items-end">
-                    <h2 class="text-2xl font-light">01/11 <span class="text-sm text-gray-400">Sun</span></h2>
-                    <span class="text-xs bg-blue-50 text-blue-500 px-2 py-1 rounded">機場 ➔ 札幌</span>
-                </div>
-                <div class="glass-card rounded-2xl p-4 space-y-4">
-                    <div class="flex items-start gap-3">
-                        <i data-lucide="car" class="w-5 h-5 mt-1 text-gray-400"></i>
-                        <div>
-                            <p class="font-medium text-gray-800">新千歲機場取車</p>
-                            <p class="text-sm text-gray-500">國內航廈 1F 3號口租車櫃檯 [cite: 14]</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=新千歲機場國內線租車櫃檯" class="inline-block mt-2 text-xs bg-gray-900 text-white px-3 py-1 rounded-full">📍 開啟導航</a>
-                        </div>
+        <div id="schedule" class="tab-content active">
+            <h2 class="text-2xl font-bold mb-4">每日行程</h2>
+            
+            <div class="mb-6">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-gray-200 text-xs font-bold px-2 py-1 rounded">1/11</span><span class="text-sm font-medium">新千歲 ➔ 札幌</span></div>
+                <div class="glass-card p-4">
+                    <p class="font-bold">✈️ 抵達 & 取車</p>
+                    <p class="text-sm text-gray-500 mb-2">IT234 10:55抵達。國內線1F 3號口租車櫃檯</p>
+                    <div class="flex gap-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=New+Chitose+Airport+Rent-a-car" class="text-xs bg-black text-white px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航取車</a>
                     </div>
-                    <div class="flex items-start gap-3 border-l-2 border-dashed border-gray-100 ml-2.5 pl-5">
-                        <i data-lucide="utensils" class="w-5 h-5 text-orange-400"></i>
-                        <div>
-                            <p class="font-medium text-gray-800">市區午餐 & 定山溪溫泉</p>
-                            <p class="text-sm text-gray-500 text-orange-600 font-bold">#必吃壽喜燒 #唐吉訶德</p>
-                        </div>
-                    </div>
+                    <hr class="my-3">
+                    <p class="font-bold">♨️ 定山溪溫泉區</p>
+                    <p class="text-sm text-gray-500 mb-2">下午泡湯。晚上回札幌吃壽喜燒+逛街</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jozankei+Onsen" class="text-xs bg-gray-100 px-3 py-1 rounded-full flex w-fit items-center gap-1"><i data-lucide="navigation" class="w-3 h-3"></i> 定山溪導航</a>
                 </div>
-            </section>
+            </div>
 
-            <section class="space-y-3">
-                <h2 class="text-2xl font-light">01/12 <span class="text-sm text-gray-400">Mon</span></h2>
-                <div class="glass-card rounded-2xl p-4 space-y-4">
-                    <div class="flex items-start gap-3">
-                        <i data-lucide="mountain" class="w-5 h-5 text-blue-400"></i>
-                        <div>
-                            <p class="font-medium text-gray-800">滑雪: 手稻或盤溪雪場 [cite: 17]</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query=札幌手稻滑雪場" class="inline-block mt-2 text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">📍 導航至雪場</a>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <i data-lucide="home" class="w-5 h-5 text-gray-400"></i>
-                        <div>
-                            <p class="font-medium text-gray-800">前進富良野 Check-in</p>
-                            <p class="text-sm text-gray-500">精靈露台 & 農夫市集買草莓 [cite: 18]</p>
-                        </div>
-                    </div>
+            <div class="mb-6 border-l-2 border-gray-200 pl-4 ml-2">
+                <p class="text-xs text-gray-400 mb-2">1/12 - 1/14 滑雪行程</p>
+                <div class="glass-card p-4">
+                    <p class="font-bold">🎿 1/12 札幌雪場 ➔ 富良野</p>
+                    <p class="text-sm text-gray-500 mb-2">手稻/盤溪滑雪。傍晚精靈露台 & 農夫市集</p>
+                    <p class="font-bold mt-3">🏂 1/13-14 富良野 & 周邊雪場</p>
+                    <p class="text-sm text-gray-500">富良野/神居/キャンモア。泡湯：王子大飯店</p>
                 </div>
-            </section>
+            </div>
 
-            <section class="space-y-3">
-                <h2 class="text-2xl font-light">01/13-14 <span class="text-sm text-gray-400">Ski Days</span></h2>
-                <div class="glass-card rounded-2xl p-4 bg-blue-50/30 border-blue-100">
-                    <p class="text-blue-600 font-bold mb-2">#滑雪攻略</p>
-                    <ul class="text-sm space-y-2 text-gray-600">
-                        <li>• 1/13: 富良野雪場 (教練課) [cite: 19]</li>
-                        <li>• 1/14: 神居或キャンモア滑雪村 [cite: 20]</li>
-                        <li>• <span class="font-bold text-blue-700 underline">必點菜單：</span> 王子大飯店溫泉泡湯</li>
-                    </ul>
+            <div class="mb-6">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">1/15</span><span class="text-sm font-medium">富良野 ➔ 札幌</span></div>
+                <div class="glass-card p-4">
+                    <p class="font-bold">📸 北國美景巡禮</p>
+                    <p class="text-sm text-gray-500 mb-3">雲霄飛車之路 ➔ 白鬚瀑布</p>
+                    <div class="flex gap-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Roller+Coaster+Road+Furano" class="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded-full">📍 雲霄飛車之路</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Shirahige+Waterfall" class="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded-full">📍 白鬚瀑布</a>
+                    </div>
+                    <p class="text-sm mt-3 font-medium text-orange-600">⚠ 下午慢慢回札幌市區，最後採買</p>
                 </div>
-            </section>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-gray-200 text-xs font-bold px-2 py-1 rounded">1/16</span><span class="text-sm font-medium">賦歸</span></div>
+                <div class="glass-card p-4">
+                    <p class="font-bold">🛍️ 機場最後衝刺</p>
+                    <p class="text-sm text-gray-500">一早還車。新千歲機場國內線非常好逛</p>
+                    <p class="text-[10px] text-gray-400 mt-2">航班 IT235 11:55 起飛</p>
+                </div>
+            </div>
         </div>
 
-        <div id="info" class="tab-content space-y-6">
-            <h2 class="text-xl font-medium border-l-4 border-gray-900 pl-3">住宿 & 航班</h2>
+        <div id="spots" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">景點 & 餐廳</h2>
+            <div class="grid grid-cols-1 gap-3">
+                <div class="glass-card p-4 flex justify-between items-center">
+                    <div><p class="font-bold">定山溪溫泉</p><p class="text-xs text-gray-400">景點 | 札幌郊區</p></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jozankei+Onsen" class="p-2 bg-blue-50 rounded-full text-blue-600"><i data-lucide="navigation"></i></a>
+                </div>
+                <div class="glass-card p-4 flex justify-between items-center border-l-4 border-orange-400">
+                    <div><p class="font-bold">札幌壽喜燒</p><p class="text-xs text-gray-400">餐廳 | 札幌市區</p></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Sukiyaki+Sapporo" class="p-2 bg-orange-50 rounded-full text-orange-600"><i data-lucide="utensils"></i></a>
+                </div>
+                <div class="glass-card p-4 flex justify-between items-center">
+                    <div><p class="font-bold">精靈露台 (Ningle Terrace)</p><p class="text-xs text-gray-400">景點 | 富良野</p></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Ningle+Terrace" class="p-2 bg-blue-50 rounded-full text-blue-600"><i data-lucide="navigation"></i></a>
+                </div>
+                <div class="glass-card p-4 flex justify-between items-center">
+                    <div><p class="font-bold">雲霄飛車之路</p><p class="text-xs text-gray-400">景點 | 上富良野</p></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Roller+Coaster+Road" class="p-2 bg-blue-50 rounded-full text-blue-600"><i data-lucide="navigation"></i></a>
+                </div>
+                <div class="glass-card p-4 flex justify-between items-center">
+                    <div><p class="font-bold">白鬚瀑布</p><p class="text-xs text-gray-400">景點 | 美瑛</p></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Shirahige+Waterfall" class="p-2 bg-blue-50 rounded-full text-blue-600"><i data-lucide="navigation"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="shopping" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">購物清單</h2>
+            
+            <div class="mb-6">
+                <h3 class="text-sm font-bold text-gray-400 mb-3 uppercase tracking-widest">必逛商店</h3>
+                <div class="space-y-3">
+                    <div class="glass-card p-4 flex items-center gap-4">
+                        <span class="text-2xl">🛍️</span>
+                        <div><p class="font-bold">貍小路商店街</p><p class="text-xs text-gray-500">札幌最大商店街</p></div>
+                    </div>
+                    <div class="glass-card p-4 flex items-center gap-4">
+                        <span class="text-2xl">🐧</span>
+                        <div><p class="font-bold">唐吉訶德 (Don Quijote)</p><p class="text-xs text-gray-500">24小時驚安殿堂</p></div>
+                    </div>
+                    <div class="glass-card p-4 flex items-center gap-4 border-l-4 border-yellow-400">
+                        <span class="text-2xl">💊</span>
+                        <div><p class="font-bold">松本清 (Matsumoto Kiyoshi)</p><p class="text-xs text-gray-500">藥妝補貨首選</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-sm font-bold text-gray-400 mb-3 uppercase tracking-widest">必買伴手禮</h3>
+                <div class="grid grid-cols-1 gap-2">
+                    <div class="bg-white p-3 rounded-xl border border-dashed border-gray-300">
+                        <p class="font-bold text-blue-600">✓ 利尻昆布染髮</p>
+                        <p class="text-xs text-gray-500">地點：松本清購入</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-dashed border-gray-300">
+                        <p class="font-bold text-blue-600">✓ 砂糖樹巧克力千層餅乾</p>
+                        <p class="text-xs text-gray-500">Sugar Butter Tree</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-dashed border-gray-300">
+                        <p class="font-bold text-blue-600">✓ 六花亭</p>
+                        <p class="text-xs text-gray-500">葡萄奶油夾心餅乾</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="info" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">交通 & 住宿</h2>
             <div class="space-y-4">
-                <div class="glass-card rounded-2xl p-4">
-                    <p class="text-xs text-gray-400 mb-1">航班號碼 [cite: 3]</p>
-                    <p class="font-mono font-bold text-lg">#J91BRG / IT234 [cite: 4, 5]</p>
+                <div class="glass-card p-4 bg-yellow-50 border-yellow-100">
+                    <p class="text-xs text-yellow-600 font-bold mb-1">租車預訂編號</p>
+                    <p class="text-lg font-mono">RC32461046608501466</p>
+                    <p class="text-xs text-yellow-600 mt-2">Rakuten Travel Rent-A-Car</p>
                 </div>
-                <div class="glass-card rounded-2xl p-4 space-y-3 text-sm">
-                    <div class="flex justify-between"><span>1/11-12</span><span class="font-bold">Sotetsu Fresa Inn [cite: 7]</span></div>
-                    <div class="flex justify-between text-blue-600"><span>1/12-15</span><span class="font-bold">AIR FURANO [cite: 8]</span></div>
-                    <div class="flex justify-between"><span>1/15-16</span><span class="font-bold">Via inn Prime [cite: 9]</span></div>
-                </div>
-                <div class="glass-card rounded-2xl p-4 bg-yellow-50">
-                    <p class="text-xs text-yellow-600 mb-1">租車預訂編號 [cite: 13]</p>
-                    <p class="font-mono font-bold break-all text-sm">RC32461046608501466</p>
+                <div class="glass-card p-4">
+                    <p class="font-bold mb-2 text-sm italic">Accommodation</p>
+                    <div class="text-sm space-y-2">
+                        <div class="flex justify-between"><span>1/11-12</span><span class="font-bold">Susukino Sotetsu</span></div>
+                        <div class="flex justify-between text-blue-600"><span>1/12-15</span><span class="font-bold">AIR FURANO</span></div>
+                        <div class="flex justify-between"><span>1/15-16</span><span class="font-bold">Via inn Odori</span></div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 flex justify-around p-3 pb-8">
-        <button onclick="showTab('schedule')" class="flex flex-col items-center text-gray-400 transition-all">
-            <i data-lucide="calendar-days" class="w-6 h-6"></i>
-            <span class="text-[10px] mt-1">行程</span>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-100 px-6 py-3 pb-8 flex justify-between items-center z-50">
+        <button onclick="showTab('schedule')" class="nav-btn active flex flex-col items-center gap-1 text-gray-400">
+            <i data-lucide="calendar"></i><span class="text-[10px]">行程</span>
         </button>
-        <button onclick="window.open('https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=016000')" class="flex flex-col items-center text-gray-400">
-            <i data-lucide="cloud-sun" class="w-6 h-6"></i>
-            <span class="text-[10px] mt-1">天氣預報</span>
+        <button onclick="showTab('spots')" class="nav-btn flex flex-col items-center gap-1 text-gray-400">
+            <i data-lucide="map-pin"></i><span class="text-[10px]">景點</span>
         </button>
-        <button onclick="showTab('info')" class="flex flex-col items-center text-gray-400">
-            <i data-lucide="info" class="w-6 h-6"></i>
-            <span class="text-[10px] mt-1">資訊</span>
+        <button onclick="showTab('shopping')" class="nav-btn flex flex-col items-center gap-1 text-gray-400">
+            <i data-lucide="shopping-bag"></i><span class="text-[10px]">購物</span>
+        </button>
+        <button onclick="showTab('info')" class="nav-btn flex flex-col items-center gap-1 text-gray-400">
+            <i data-lucide="info"></i><span class="text-[10px]">資訊</span>
         </button>
     </nav>
 
     <script>
         lucide.createIcons();
         function showTab(tabId) {
+            // 切換頁面
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
+            
+            // 切換按鈕狀態
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // 捲動回頂部
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
