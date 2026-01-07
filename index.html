@@ -3,196 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>北海道雪季自駕 v4</title>
+    <title>北海道 2026 最終攻略</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background-color: #F9FAFB; color: #1F2937; }
-        .tab-content { display: none; padding: 16px; animation: fadeIn 0.2s ease-in-out; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background-color: #F3F4F6; color: #111827; }
+        .tab-content { display: none; padding: 12px; animation: fadeIn 0.2s ease; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .glass-card { background: white; border-radius: 16px; border: 1px solid #F3F4F6; margin-bottom: 12px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-        .nav-btn.active { color: #2563EB; font-weight: 800; background: #EFF6FF; border-radius: 12px; }
-        .meal-tag { font-size: 10px; padding: 2px 8px; border-radius: 6px; background: #FEF3C7; color: #92400E; font-weight: bold; }
-        .cat-badge { font-size: 10px; padding: 2px 8px; border-radius: 99px; background: #F3F4F6; color: #6B7280; }
-        .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .glass-card { background: white; border-radius: 12px; border: 1px solid #E5E7EB; margin-bottom: 10px; padding: 14px; }
+        .nav-btn.active { color: #2563EB; font-weight: 800; background: #DBEAFE; border-radius: 8px; }
+        .meal-tag { font-size: 10px; padding: 2px 5px; border-radius: 4px; background: #FFEDD5; color: #9A3412; font-weight: bold; }
+        .desc-text { font-size: 11px; color: #4B5563; line-height: 1.4; margin-top: 5px; white-space: pre-line; }
+        .nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
     </style>
 </head>
 <body class="pb-32">
 
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 shadow-sm text-center">
-        <h1 class="text-sm font-black tracking-[0.2em] text-gray-800">HOKKAIDO 2026 AUTO-GUIDE</h1>
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 p-3 text-center">
+        <h1 class="text-sm font-black tracking-widest uppercase">Hokkaido Trip 2026</h1>
     </header>
 
     <main class="max-w-md mx-auto">
         
         <div id="schedule" class="tab-content active">
-            <h2 class="text-xl font-bold mb-4">📅 完整六日行程</h2>
+            <h2 class="text-lg font-bold mb-3 px-1 text-blue-700">🗓️ 1/11 ~ 1/16 行程表</h2>
             
-            <div class="space-y-4">
-                <script>
-                    const days = [
-                        { d: "1/11 (日)", title: "抵達與溫泉", morning: "10:55 抵達新千歲機場 ➔ 辦理取車", lunch: "機場美食街或路上簡易用餐", after: "飯店放行李 ➔ 定山溪溫泉體驗", dinner: "札幌市區壽喜燒名店 ➔ 唐吉訶德採購" },
-                        { d: "1/12 (一)", title: "滑雪初探", morning: "札幌附近雪場 (手稻/盤溪) 滑雪", lunch: "雪場景觀餐廳", after: "開車往富良野 ➔ 民宿 Check-in", dinner: "富良野市區美食 ➔ 精靈露台夜遊" },
-                        { d: "1/13 (二)", title: "富良野全日滑雪", morning: "富良野雪場 (教練指導課)", lunch: "雪場食堂", after: "持續練習或回民宿稍憩", dinner: "當地燒肉或居酒屋 ➔ 溫泉泡湯" },
-                        { d: "1/14 (三)", title: "滑雪場巡禮", morning: "前往神居或キャンモア滑雪村", lunch: "在地拉麵店", after: "滑雪與玩雪設施體驗", dinner: "富良野農夫市集食材採買 ➔ 自炊或市區晚餐" },
-                        { d: "1/15 (四)", title: "美景回程", morning: "雲霄飛車之路 ➔ 白鬚瀑布拍照", lunch: "美瑛選集 (Asperges) 或在地料理", after: "慢慢開車返回札幌市區", dinner: "札幌成吉思汗烤肉 ➔ 貍小路最後衝刺" },
-                        { d: "1/16 (五)", title: "賦歸", morning: "市區早餐 ➔ 9:30 前抵達機場還車", lunch: "新千歲機場國內線 (最後的美食)", after: "11:55 IT235 登機回台", dinner: "溫暖的家" }
-                    ];
-                    days.forEach(day => {
-                        document.write(`
-                            <div class="glass-card">
-                                <p class="text-blue-600 font-bold mb-2">${day.d} ${day.title}</p>
-                                <div class="text-xs space-y-2">
-                                    <p>☀️ <b>上午</b>: ${day.morning}</p>
-                                    <p><span class="meal-tag">午餐</span> ${day.lunch}</p>
-                                    <p>☁️ <b>下午</b>: ${day.after}</p>
-                                    <p><span class="meal-tag">晚餐</span> ${day.dinner}</p>
-                                </div>
-                            </div>
-                        `);
-                    });
-                </script>
-            </div>
-        </div>
+            <div class="space-y-3">
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm">Day 1 - 1/11 (日)</p>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p>☀️ <b>上午</b>: 10:55 抵達新千歲 ➔ 租車 ➔ 飯店放行李</p>
+                        <p><span class="meal-tag">午餐</span> 札幌市區</p>
+                        <p>☁️ <b>下午</b>: 定山溪溫泉街泡湯</p>
+                        <p><span class="meal-tag">晚餐</span> 札幌市區壽喜燒</p>
+                        <p>🌙 <b>晚上</b>: 札幌市區逛街</p>
+                    </div>
+                </div>
 
-        <div id="ski" class="tab-content">
-            <h2 class="text-xl font-bold mb-4">🎿 滑雪與溫泉</h2>
-            <div id="skiContainer" class="space-y-3"></div>
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm">Day 2 - 1/12 (一)</p>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p>☀️ <b>上午</b>: 札幌雪場選一：<br>
+                        • <b>手稻</b> (車程40分，雪場較大)<br>
+                        • <b>盤溪</b> (車程20分，較小一點)</p>
+                        <p><span class="meal-tag">午餐</span> 札幌市區或沿途</p>
+                        <p>☁️ <b>下午</b>: 開車往富良野 Check-in (AIR FURANO)</p>
+                        <p><span class="meal-tag">晚餐</span> 富良野市區</p>
+                        <p>🌙 <b>晚上</b>: 農夫市集買草莓 ➔ 精靈露台走走</p>
+                    </div>
+                </div>
+
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm">Day 3 - 1/13 (二)</p>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p>☀️ <b>上午</b>: 富良野滑雪 (教練課)</p>
+                        <p><span class="meal-tag">午餐</span> 雪場</p>
+                        <p>☁️ <b>下午</b>: 繼續滑雪</p>
+                        <p><span class="meal-tag">晚餐</span> 富良野市區</p>
+                        <p>🌙 <b>晚上</b>: 體驗夜滑 ➔ 泡溫泉</p>
+                    </div>
+                </div>
+
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm">Day 4 - 1/14 (三)</p>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p>☀️ <b>上午</b>: 神居或キャンモア滑雪村</p>
+                        <p><span class="meal-tag">午餐</span> 食堂</p>
+                        <p>☁️ <b>下午</b>: 繼續滑雪</p>
+                        <p><span class="meal-tag">晚餐</span> 富良野市區</p>
+                        <p>🌙 <b>晚上</b>: 泡溫泉 (王子大飯店)</p>
+                    </div>
+                </div>
+
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm">Day 5 - 1/15 (四)</p>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p>☀️ <b>上午</b>: 雲霄飛車之路 ➔ 白鬚瀑布</p>
+                        <p><span class="meal-tag">午餐</span> 札幌市區</p>
+                        <p>☁️ <b>下午/晚上</b>: 札幌市區逛街</p>
+                        <p><span class="meal-tag">晚餐</span> 札幌市區</p>
+                    </div>
+                </div>
+
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm">Day 6 - 1/16 (五)</p>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p>☀️ <b>上午</b>: 機場還車 ➔ 機場最後採購</p>
+                        <p>✈️ <b>11:55</b> IT235 起飛</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="food" class="tab-content">
-            <h2 class="text-xl font-bold mb-4">🍱 美食與餐廳</h2>
-            <div id="foodContainer" class="space-y-3"></div>
-        </div>
-
-        <div id="spots" class="tab-content">
-            <h2 class="text-xl font-bold mb-4">📸 景點清單</h2>
-            <div id="spotsContainer" class="space-y-3"></div>
+            <h2 class="text-lg font-bold mb-3 text-orange-600">🍱 所有餐廳清單</h2>
+            <div id="foodList" class="space-y-2"></div>
         </div>
 
         <div id="shop" class="tab-content">
-            <h2 class="text-xl font-bold mb-4">🛍️ 購物與伴手禮</h2>
-            <div class="glass-card bg-yellow-50 mb-4 font-bold text-sm">
-                必買：利尻昆布染髮、六花亭、砂糖樹餅乾
-            </div>
-            <div id="shopContainer" class="space-y-3"></div>
+            <h2 class="text-lg font-bold mb-3 text-green-600">🛍️ 購物 & 伴手禮</h2>
+            <div id="shopList" class="space-y-2"></div>
         </div>
 
-        <div id="info" class="tab-content">
-            <h2 class="text-xl font-bold mb-4">ℹ️ 交通資訊</h2>
-            <div class="glass-card bg-black text-white">
-                <p class="text-[10px] opacity-60">租車預約編號</p>
-                <p class="text-lg font-mono">RC32461046608501466</p>
-            </div>
-            <div class="glass-card">
-                <p class="font-bold text-sm">住宿清單</p>
-                <p class="text-xs mt-2 italic">1/11: Sotetsu Fresa Inn</p>
-                <p class="text-xs mt-1 italic">1/12-15: AIR FURANO</p>
-                <p class="text-xs mt-1 italic">1/15: Via inn Prime</p>
-            </div>
+        <div id="spots" class="tab-content">
+            <h2 class="text-lg font-bold mb-3 text-purple-600">📸 景點 & 溫泉</h2>
+            <div id="spotsList" class="space-y-2"></div>
         </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-2 pb-6 z-50">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 pb-8 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         <div class="nav-grid">
             <button onclick="showTab('schedule')" class="nav-btn p-2 flex flex-col items-center gap-1 active">
-                <i data-lucide="calendar"></i><span class="text-[10px]">行程</span>
-            </button>
-            <button onclick="showTab('ski')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="mountain"></i><span class="text-[10px]">滑雪溫泉</span>
+                <i data-lucide="calendar" class="w-5 h-5"></i><span class="text-[10px]">行程</span>
             </button>
             <button onclick="showTab('food')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="utensils"></i><span class="text-[10px]">美食</span>
-            </button>
-            <button onclick="showTab('spots')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="camera"></i><span class="text-[10px]">景點</span>
+                <i data-lucide="utensils" class="w-5 h-5"></i><span class="text-[10px]">餐廳</span>
             </button>
             <button onclick="showTab('shop')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="shopping-cart"></i><span class="text-[10px]">購物</span>
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[10px]">購物</span>
             </button>
-            <button onclick="showTab('info')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="car"></i><span class="text-[10px]">資訊</span>
+            <button onclick="showTab('spots')" class="nav-btn p-2 flex flex-col items-center gap-1">
+                <i data-lucide="map" class="w-5 h-5"></i><span class="text-[10px]">景點</span>
             </button>
         </div>
     </nav>
 
     <script>
-        lucide.createIcons();
-
-        // 51個地點的正確資料數據
-        const allLocations = [
-            // 滑雪 & 溫泉
-            { name: "定山溪溫泉區", cat: "ski", detail: "札幌郊區首選溫泉", nav: "https://www.google.com/maps/search/定山溪溫泉" },
-            { name: "札幌手稻滑雪場 (Teine)", cat: "ski", detail: "奧運級雪道", nav: "https://www.google.com/maps/search/Sapporo+Teine" },
-            { name: "札幌盤溪滑雪場 (bankei)", cat: "ski", detail: "離市區最近", nav: "https://www.google.com/maps/search/Sapporo+bankei" },
-            { name: "富良野滑雪場", cat: "ski", detail: "北之峰與富良野區", nav: "https://www.google.com/maps/search/Furano+Ski+Resort" },
-            { name: "神居滑雪場 (Kamui)", cat: "ski", detail: "優質粉雪", nav: "https://www.google.com/maps/search/Kamui+Ski+Links" },
-            { name: "キャンモア滑雪村", cat: "ski", detail: "親子滑雪推薦", nav: "https://www.google.com/maps/search/Canmore+Ski+Village" },
-            { name: "新富良野王子溫泉", cat: "ski", detail: "滑雪後放鬆首選", nav: "https://www.google.com/maps/search/新富良野王子飯店+溫泉" },
-            
-            // 美食
-            { name: "成吉思汗 だるま (Daruma)", cat: "food", detail: "札幌必吃羊肉", nav: "https://www.google.com/maps/search/成吉思汗だるま" },
-            { name: "二條市場", cat: "food", detail: "海鮮丼飯集中地", nav: "https://www.google.com/maps/search/二條市場" },
-            { name: "Soup Curry GARAKU", cat: "food", detail: "排隊名店湯咖哩", nav: "https://www.google.com/maps/search/Soup+Curry+GARAKU" },
-            { name: "奧芝商店 湯咖哩", cat: "food", detail: "蝦頭熬製湯頭", nav: "https://www.google.com/maps/search/奧芝商店" },
-            { name: "富良野農夫市集 (Kaze)", cat: "food", detail: "新鮮草莓與在地食材", nav: "https://www.google.com/maps/search/Furano+Marche" },
-            { name: "美瑛選集 (Asperges)", cat: "food", detail: "米其林推薦法料", nav: "https://www.google.com/maps/search/Beiei+Asperges" },
-            { name: "支那虎拉麵", cat: "food", detail: "富良野在地評價高", nav: "https://www.google.com/maps/search/支那虎" },
-
-            // 景點
-            { name: "精靈露台 (Ningle Terrace)", cat: "spots", detail: "夜晚點燈極美", nav: "https://www.google.com/maps/search/Ningle+Terrace" },
-            { name: "雲霄飛車之路", cat: "spots", detail: "上富良野必經美景", nav: "https://www.google.com/maps/search/雲霄飛車之路" },
-            { name: "白鬚瀑布", cat: "spots", detail: "冬日絕美冰藍", nav: "https://www.google.com/maps/search/白鬚瀑布" },
-            { name: "札幌電視塔", cat: "spots", detail: "大通公園地標", nav: "https://www.google.com/maps/search/札幌電視塔" },
-            { name: "青池 (Blue Pond)", cat: "spots", detail: "冬季夜間點燈", nav: "https://www.google.com/maps/search/美瑛青池" },
-            { name: "旭山動物園", cat: "spots", detail: "企鵝散步必看", nav: "https://www.google.com/maps/search/旭山動物園" },
-
-            // 購物
-            { name: "貍小路商店街", cat: "shop", detail: "藥妝、伴手禮、土產", nav: "https://www.google.com/maps/search/貍小路" },
-            { name: "唐吉訶德 (狸小路店)", cat: "shop", detail: "24小時購物首選", nav: "https://www.google.com/maps/search/Don+Quijote+Sapporo" },
-            { name: "松本清", cat: "shop", detail: "染髮劑與保養品", nav: "https://www.google.com/maps/search/Matsumoto+Kiyoshi+Sapporo" },
-            { name: "PARCO 札幌", cat: "shop", detail: "潮牌與時尚百貨", nav: "https://www.google.com/maps/search/Sapporo+PARCO" },
-            { name: "大丸百貨 札幌", cat: "shop", detail: "砂糖樹餅乾專櫃", nav: "https://www.google.com/maps/search/Daimaru+Sapporo" },
-            { name: "六花亭 札幌本店", cat: "shop", detail: "必買奶油葡萄餅乾", nav: "https://www.google.com/maps/search/六花亭+札幌本店" }
+        const foods = [
+            { name: "三光舍壽喜燒 Sukiyaki Sankousha", desc: "札幌老字號壽喜燒名店" },
+            { name: "牛しゃぶ 牛すき 禪", desc: "提供頂級牛涮涮鍋與壽喜燒料理" },
+            { name: "Shabu Shabu LetUs Susukino Branch", desc: "位於薄野的精緻涮涮鍋店" },
+            { name: "Donguri Odori", desc: "多人推麵包店，大通公園旁必買" },
+            { name: "耀い (Kagayaki)", desc: "帝王蟹吃到飽，大口吃蟹的首選" },
+            { name: "焼肉徳寿 K-Place", desc: "高品質燒肉店，環境雅致" },
+            { name: "RAZAN Charcoal-Grilled Wagyu Yakiniku", desc: "薄野店，主打炭火燒烤和牛燒肉" },
+            { name: "根室花丸 COCONO SUSUKINO店", desc: "大人氣迴轉壽司，食材鮮度一流" },
+            { name: "二條市場 札幌 海鮮蓋飯 丼兵衛", desc: "菜單種類繁多，客人可從多達50種菜單中選擇自己喜愛的海鮮蓋飯" },
+            { name: "二條市場 DONBURI茶屋", desc: "熱賣10種配料『名物蓋飯』。另有黃金海寶蓋飯、奢華蓋飯等。推『極上熟成海鮮蓋飯』，職人將鮮魚熟成凝聚美味。" },
+            { name: "二條市場 螃蟹餐廳 蟹工船", desc: "主打螃蟹蓋飯，有水煮蟹肉、鮭魚卵或海膽雙拼。還有生雪場蟹肉生魚片蓋飯。早上8點開始營業。" },
+            { name: "麵屋 彩未", desc: "代表北海道味噌拉麵最高峰，造訪札幌必吃拉麵店" },
+            { name: "純連 中之島本店", desc: "湯頭有濃醇味噌與炒豬肉香氣，豬油蔬菜鮮甜，叉燒放有薑泥，寒冬暖身必吃" },
+            { name: "吉山商店 本店", desc: "最銷『培煎胡麻味噌拉麵』。豚骨底加胡麻高湯，口感濃厚層次豐富，稱“進化版札幌拉麵”。" },
+            { name: "薄野 螃蟹亭", desc: "受歡迎『螃蟹全餐』，有活蟹生魚片、現煮水煮活蟹、烤雪場蟹。另有螃蟹燒賣、煎烤雪場蟹、奶油馬鈴薯。" },
+            { name: "薄野 螃蟹與道產料理 雪華亭", desc: "套餐中最愛『北海松葉蟹涮涮鍋』，鮮美滋味無法比擬" },
+            { name: "薄野 成吉思汗 達摩 本店", desc: "薄野名物料理。隱藏版：將吸滿肉汁醬汁的拌飯倒入焙茶做茶泡飯。" },
+            { name: "雪印冰淇淋 札幌本店", desc: "專為昭和天皇製作的冰淇淋『Snow Royal』，及30多種百匯。" },
+            { name: "市場食堂 (市場定食)", desc: "在地市場風格的平價豐富定食" },
+            { name: "迴轉壽司 Toriton 旭神店", desc: "在地高評價熱門迴轉壽司店" }
         ];
 
-        // 補充至 51 個具體地點 (模擬地圖上的其他細項標註)
-        const categories = ["ski", "food", "spots", "shop"];
-        for(let i = allLocations.length; i < 51; i++) {
-            const randomCat = categories[Math.floor(Math.random() * categories.length)];
-            allLocations.push({ 
-                name: `地圖標記名店 ${i+1}`, 
-                cat: randomCat, 
-                detail: "地圖標註地點內容", 
-                nav: "https://www.google.com/maps/search/Hokkaido" 
-            });
-        }
+        const shops = [
+            { name: "富良野農夫市集", desc: "重要任務：買新鮮草莓" },
+            { name: "Montbell Daisetsu Higashikawa Store", desc: "超大 Montbell 戶外用品旗艦店" },
+            { name: "松本清", desc: "購買：利尻昆布染髮" },
+            { name: "唐吉訶德", desc: "購買：迷你相機" },
+            { name: "無印良品 PARCO札幌店", desc: "購買：線香" },
+            { name: "狸小路2丁目", desc: "內有歷史超過百年、北海道最古老 BEER HALL『狸小路LION』。" },
+            { name: "六花亭 札幌本店", desc: "必購伴手禮：萊姆葡萄餅乾" },
+            { name: "大丸札幌地下1F Hoppe Town", desc: "伴手禮天堂：LeTAO起司蛋糕、ROYCE巧克力、北菓樓米菓等名產一次買齊。" }
+        ];
 
-        function renderAll() {
-            const containers = {
-                ski: document.getElementById('skiContainer'),
-                food: document.getElementById('foodContainer'),
-                spots: document.getElementById('spotsContainer'),
-                shop: document.getElementById('shopContainer')
-            };
-            
-            allLocations.forEach(loc => {
-                if (containers[loc.cat]) {
-                    containers[loc.cat].innerHTML += `
-                        <div class="glass-card flex justify-between items-center">
-                            <div>
-                                <p class="text-sm font-bold">${loc.name}</p>
-                                <p class="text-[10px] text-gray-400">${loc.detail}</p>
-                            </div>
-                            <a href="${loc.nav}" target="_blank" class="bg-blue-50 text-blue-600 p-2 rounded-full">
-                                <i data-lucide="navigation-2" class="w-4 h-4"></i>
-                            </a>
+        const spots = [
+            { name: "諏訪神社", desc: "購買夢幻的『簍空御守』" },
+            { name: "Makomanai Takino Cemetery", desc: "真駒內瀧野靈園，壯觀的摩艾巨像與大佛。" },
+            { name: "PARCO札幌 流行文化", desc: "JUMP SHOP (熱門漫畫人物)、橡子共和國 (吉卜力動畫商品)。" },
+            { name: "藻岩山", desc: "札幌知名夜景，俯瞰壯闊城市燈火。" },
+            { name: "定山溪溫泉街", desc: "150年歷史，修行僧美泉定山建造的悠久溫泉名地。" },
+            { name: "豐平峽溫泉", desc: "源泉直注浴池，擁有日本最大規模的露天浴池。" },
+            { name: "雲霄飛車之路", desc: "自駕聖地，體驗連續高低起伏的震撼美景。" },
+            { name: "白鬚瀑布", desc: "美瑛名景，冬日深藍水流與白雪交織極美。" }
+        ];
+
+        function renderList(data, containerId) {
+            const container = document.getElementById(containerId);
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="glass-card flex justify-between items-start">
+                        <div class="pr-2">
+                            <p class="font-bold text-xs text-gray-800">${item.name}</p>
+                            <p class="desc-text">${item.desc}</p>
                         </div>
-                    `;
-                }
+                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}" target="_blank" class="p-1.5 bg-gray-100 text-gray-500 rounded-full flex-shrink-0">
+                            <i data-lucide="navigation" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                `;
             });
-            lucide.createIcons();
         }
 
         function showTab(tabId) {
@@ -200,10 +197,15 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            window.scrollTo(0, 0);
+            window.scrollTo(0,0);
         }
 
-        renderAll();
+        window.onload = () => {
+            renderList(foods, 'foodList');
+            renderList(shops, 'shopList');
+            renderList(spots, 'spotsList');
+            lucide.createIcons();
+        };
     </script>
 </body>
 </html>
