@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
     <style>
-        :root { --bg: #fdfcfb; --card: #ffffff; --accent: #4a4542; --soft-brown: #f7f3f0; --soft-grey: #f2f2f2; }
+        :root { --bg: #fdfcfb; --card: #ffffff; --accent: #4a4542; }
         body { font-family: "PingFang TC", "Noto Sans TC", sans-serif; background-color: var(--bg); color: var(--accent); user-select: none; }
         .tab-content { display: none; padding-bottom: 140px; animation: fadeIn 0.2s ease; }
         .tab-content.active { display: block; }
@@ -27,7 +27,6 @@
         .content-draggables { flex-grow: 1; min-height: 40px; display: flex; align-items: center; }
         .inner-content { font-size: 14px; line-height: 1.4; padding: 8px 12px; border-radius: 8px; width: 100%; cursor: grab; }
         
-        /* 編輯模式啟動時 */
         .edit-mode-active .inner-content { background: #fffbeb !important; border: 1px dashed #f59e0b; cursor: text; }
 
         .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #b5ada8; margin: 24px 0 10px 0; display: flex; align-items: center; gap: 8px; }
@@ -43,9 +42,9 @@
         <div class="w-10"></div>
         <div class="text-center">
             <h1 class="text-xl font-black tracking-tight text-[#5d5753]">HOKKAIDO 2026</h1>
-            <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase">Travel Manual v15.0</p>
+            <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase text-xs">Itinerary Updated</p>
         </div>
-        <button onclick="toggleEditMode()" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full active:scale-90 transition-transform">
+        <button onclick="toggleEditMode()" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full active:scale-95 transition-transform">
             <i data-lucide="settings-2" class="w-5 h-5 text-gray-600"></i>
         </button>
     </header>
@@ -54,11 +53,11 @@
         <div id="schedule" class="tab-content active">
             <script>
                 const days = [
-                    {d: "1/11 SUN 札幌入", items: ["10:55 抵達新千歲 ➔ 租車櫃檯辦理", "飯店放行李 ➔ 市區午餐", "定山溪溫泉街散策 ➔ 泡湯", "可考慮壽喜燒 ➔ 札幌市區購物"]},
-                    {d: "1/12 MON 往富良野", items: ["手稻/盤溪滑雪場 (半日滑雪)", "回札幌市區或沿途午餐 ➔ 往富良野", "AIR FURANO Check-in ➔ 農夫市集🍓", "精靈露台 ➔ 富良野市區晚餐"]},
-                    {d: "1/13 TUE 教練課", items: ["09:00-12:00 富良野滑雪 (教練指導)", "雪場內午餐休息", "13:30-15:30 繼續滑雪課程", "富良野在地美食探訪"]},
-                    {d: "1/14 WED 雪場巡禮", items: ["神居滑雪場 或 キャンモア滑雪村", "雪場午餐", "滑雪活動 ➔ 前往王子飯店泡湯", "富良野整理行李 ➔ 休息"]},
-                    {d: "1/15 THU 景點/回札幌", items: ["美瑛：雲霄飛車之路 ➔ 白鬚瀑布", "美瑛午餐", "開車回札幌市區 ➔ 飯店入住", "市區逛街 ➔ 市區晚餐"]},
+                    {d: "1/11 SUN 札幌入", items: ["10:55 抵達新千歲 ➔ 租車櫃檯辦理", "飯店放行李 ➔ 市區午餐", "神社、定山溪溫泉街散策 ➔ 泡湯", "可考慮壽喜燒 ➔ 札幌市區購物"]},
+                    {d: "1/12 MON 往富良野", items: ["早起開車往富良野", "AIR FURANO Check-in ➔ 農夫市集🍓", "09:00-12:00 富良野滑雪 (教練課)", "夜滑體驗＋晚餐"]},
+                    {d: "1/13 TUE 教練課", items: ["富良野雪場", "富良野午餐＋雪場", "繼續滑雪", "晚餐"]},
+                    {d: "1/14 WED 雪場巡禮", items: ["富良野雪場滑雪", "雪場午餐", "滑雪活動", "晚餐、精靈露台 ➔ 前往王子飯店泡湯"]},
+                    {d: "1/15 THU 景點/回札幌", items: ["開車回札幌市區", "札幌午餐", "滑雪或逛街", "市區逛街 ➔ 市區晚餐"]},
                     {d: "1/16 FRI 返台", items: ["前往機場還車 ➔ 報到手續", "11:55 IT235 登機返台", "15:35 抵達桃園國際機場", "平安抵達溫暖的家"]}
                 ];
                 const labels = ["早", "中", "下午", "晚"];
@@ -73,7 +72,7 @@
         </div>
 
         <div id="ski" class="tab-content">
-            <div class="section-title">札幌區</div>
+            <div class="section-title">滑雪場資訊</div>
             <div class="slot-container"><p class="text-sm font-black">手稻滑雪場</p><a href="https://snowsapporo.com/tw/skiarea/teine/" target="_blank" class="nav-link-btn">官方網站</a></div>
             <div class="slot-container"><p class="text-sm font-black">盤溪滑雪場</p><a href="https://snowsapporo.com/tw/skiarea/bankei/" target="_blank" class="nav-link-btn">官方網站</a></div>
             <div class="section-title">富良野 & 旭川</div>
@@ -109,19 +108,19 @@
 
         <div id="mapTab" class="tab-content">
             <div class="section-title">Travel Map</div>
-            <div class="w-full h-[550px] rounded-3xl overflow-hidden border">
-                <iframe src="http://googleusercontent.com/maps.google.com/search?q=Hokkaido" width="100%" height="100%" style="border:0;"></iframe>
+            <div class="w-full flex justify-center">
+                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1J0vf6BMX9f5Jxqn-kRZBUYkOywqnrc0&ehbc=2E312F&noprof=1" width="100%" height="480" style="border:0; border-radius: 20px;"></iframe>
             </div>
         </div>
 
         <div id="info" class="tab-content">
-            <div class="section-title">Hotel Nav</div>
-            <div class="slot-container space-y-4">
-                <p class="text-sm font-bold">1/11 Sotetsu Fresa Inn 札幌薄野</p>
-                <p class="text-sm font-bold text-[#8b7355]">1/12-14 AIR FURANO (富良野)</p>
-                <p class="text-sm font-bold">1/15 Via Inn Prime 札幌大通</p>
+            <div class="section-title">Hotel & Car</div>
+            <div class="slot-container space-y-4 text-sm">
+                <p><b>1/11</b> Sotetsu Fresa Inn 札幌薄野</p>
+                <p class="text-[#8b7355]"><b>1/12-14</b> AIR FURANO (富良野)</p>
+                <p><b>1/15</b> Via Inn Prime 札幌大通</p>
                 <hr>
-                <p class="text-xs uppercase text-gray-400">Car Rental: RC32461046608501466</p>
+                <p class="text-gray-400">RC32461046608501466</p>
             </div>
         </div>
     </main>
@@ -146,9 +145,8 @@
             window.scrollTo(0,0);
         }
 
-        // 初始化拖曳 (僅限內容格位)
-        const zones = document.querySelectorAll('.content-draggables');
-        zones.forEach(zone => {
+        // 初始化拖曳
+        document.querySelectorAll('.content-draggables').forEach(zone => {
             Sortable.create(zone, {
                 group: 'hokkaido-items',
                 animation: 200,
@@ -157,21 +155,20 @@
             });
         });
 
-        // 編輯模式開關
+        // 編輯模式
         let isEditMode = false;
         function toggleEditMode() {
             isEditMode = !isEditMode;
             const schedule = document.getElementById('schedule');
             const contents = document.querySelectorAll('.inner-content');
-            
             if (isEditMode) {
                 schedule.classList.add('edit-mode-active');
                 contents.forEach(c => c.contentEditable = "true");
-                alert("編輯模式已開啟，可修改行程文字。");
+                alert("編輯模式開啟：直接點選文字即可修改。");
             } else {
                 schedule.classList.remove('edit-mode-active');
                 contents.forEach(c => c.contentEditable = "false");
-                alert("已退出編輯模式並鎖定文字。");
+                alert("已鎖定行程內容。");
             }
         }
     </script>
