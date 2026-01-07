@@ -19,146 +19,121 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* 拖曳樣式 */
-        .sortable-ghost { opacity: 0.2; background: #8b7355 !important; }
+        /* 拖曳與編輯樣式 */
+        .sortable-ghost { opacity: 0.1; background: #8b7355 !important; }
         .slot-container { background: var(--card); border-radius: 18px; padding: 12px; margin-bottom: 15px; border: 1px solid #f0efed; }
         .time-slot { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
-        .time-slot:last-child { border-bottom: none; }
         .fixed-label { font-size: 10px; font-weight: 900; color: #b5ada8; width: 35px; text-align: center; flex-shrink: 0; }
-
-        /* 行程內容區 */
-        .content-draggables { flex-grow: 1; min-height: 44px; display: flex; align-items: center; }
-        .inner-content { font-size: 14px; line-height: 1.4; padding: 8px 10px; border-radius: 8px; width: 100%; cursor: grab; border: 1px solid transparent; }
-        .inner-content:focus { outline: none; background: #fff !important; border: 1px dashed #8b7355; cursor: text; }
+        .content-draggables { flex-grow: 1; min-height: 40px; display: flex; align-items: center; }
+        .inner-content { font-size: 14px; line-height: 1.4; padding: 8px 12px; border-radius: 8px; width: 100%; cursor: grab; }
+        
+        /* 編輯模式啟動時 */
+        .edit-mode-active .inner-content { background: #fffbeb !important; border: 1px dashed #f59e0b; cursor: text; }
 
         .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #b5ada8; margin: 24px 0 10px 0; display: flex; align-items: center; gap: 8px; }
         .section-title::after { content: ""; height: 1px; flex-grow: 1; background: #eee; }
-        
-        .nav-btn { color: #d4d4d4; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-btn { color: #d4d4d4; transition: all 0.2s; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .nav-btn.active { color: #8b7355; font-weight: bold; }
         .nav-link-btn { background: #8b7355; color: white; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; display: inline-block; margin-top: 10px; }
-        .edit-mode-active .inner-content { background: #fffbeb !important; border: 1px solid #f59e0b; }
     </style>
 </head>
 <body class="max-w-md mx-auto">
 
     <header class="p-6 pt-10 pb-4 sticky top-0 bg-[#fdfcfb]/95 backdrop-blur-md z-50 flex justify-between items-center">
-        <div class="w-10"></div> <div>
+        <div class="w-10"></div>
+        <div class="text-center">
             <h1 class="text-xl font-black tracking-tight text-[#5d5753]">HOKKAIDO 2026</h1>
-            <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase text-center text-xs">Trip Manual</p>
+            <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase">Travel Manual v15.0</p>
         </div>
-        <button onclick="toggleEditMode()" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full">
-            <i data-lucide="settings" class="w-5 h-5 text-gray-600"></i>
+        <button onclick="toggleEditMode()" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full active:scale-90 transition-transform">
+            <i data-lucide="settings-2" class="w-5 h-5 text-gray-600"></i>
         </button>
     </header>
 
     <main class="px-5">
         <div id="schedule" class="tab-content active">
-            <div class="section-title">1/11 SUN 札幌入</div>
-            <div class="slot-container">
-                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content" contenteditable="false">10:55 抵達新千歲 ➔ 租車櫃檯辦理</div></div></div>
-                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content bg-[#f7f3f0]" contenteditable="false">飯店放行李 ➔ 市區午餐</div></div></div>
-                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content bg-[#f2f2f2]" contenteditable="false">定山溪溫泉街散策 ➔ 泡湯</div></div></div>
-                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content" contenteditable="false">可考慮壽喜燒 ➔ 札幌市區購物</div></div></div>
-            </div>
-            <div class="section-title">1/12 MON 往富良野</div>
-            <div class="slot-container">
-                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content" contenteditable="false">手稻/盤溪滑雪場 (半日滑雪)</div></div></div>
-                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content bg-[#f7f3f0]" contenteditable="false">回札幌市區或午餐 ➔ 往富良野</div></div></div>
-                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content bg-[#f2f2f2]" contenteditable="false">AIR FURANO Check-in ➔ 農夫市集🍓</div></div></div>
-                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content" contenteditable="false">精靈露台 ➔ 富良野市區晚餐</div></div></div>
-            </div>
-            <div class="section-title">1/13 TUE 教練課</div>
-            <div class="slot-container">
-                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content" contenteditable="false">09:00-12:00 富良野滑雪 (教練指導)</div></div></div>
-                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content bg-[#f7f3f0]" contenteditable="false">雪場內午餐休息</div></div></div>
-                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content bg-[#f2f2f2]" contenteditable="false">13:30-15:30 繼續滑雪課程</div></div></div>
-                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content" contenteditable="false">富良野在地美食探訪</div></div></div>
-            </div>
-            <div class="section-title">1/14 WED 雪場巡禮</div>
-            <div class="slot-container">
-                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content" contenteditable="false">神居滑雪場 或 キャンモア滑雪村</div></div></div>
-                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content bg-[#f7f3f0]" contenteditable="false">雪場午餐</div></div></div>
-                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content bg-[#f2f2f2]" contenteditable="false">滑雪活動 ➔ 王子飯店泡湯</div></div></div>
-                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content" contenteditable="false">富良野整理行李 ➔ 休息</div></div></div>
-            </div>
-            <div class="section-title">1/15 THU 景點/回札幌</div>
-            <div class="slot-container">
-                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content" contenteditable="false">美瑛：雲霄飛車之路 ➔ 白鬚瀑布</div></div></div>
-                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content bg-[#f7f3f0]" contenteditable="false">美瑛午餐</div></div></div>
-                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content bg-[#f2f2f2]" contenteditable="false">開車回札幌市區 ➔ 飯店入住</div></div></div>
-                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content" contenteditable="false">市區逛街 ➔ 市區晚餐</div></div></div>
-            </div>
-            <div class="section-title">1/16 FRI 返台</div>
-            <div class="slot-container">
-                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content" contenteditable="false">前往機場還車 ➔ 報到手續</div></div></div>
-                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content bg-[#f7f3f0]" contenteditable="false">11:55 IT235 登機返台</div></div></div>
-                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content bg-[#f2f2f2]" contenteditable="false">15:35 抵達桃園國際機場</div></div></div>
-                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content" contenteditable="false">平安抵達溫暖的家</div></div></div>
-            </div>
+            <script>
+                const days = [
+                    {d: "1/11 SUN 札幌入", items: ["10:55 抵達新千歲 ➔ 租車櫃檯辦理", "飯店放行李 ➔ 市區午餐", "定山溪溫泉街散策 ➔ 泡湯", "可考慮壽喜燒 ➔ 札幌市區購物"]},
+                    {d: "1/12 MON 往富良野", items: ["手稻/盤溪滑雪場 (半日滑雪)", "回札幌市區或沿途午餐 ➔ 往富良野", "AIR FURANO Check-in ➔ 農夫市集🍓", "精靈露台 ➔ 富良野市區晚餐"]},
+                    {d: "1/13 TUE 教練課", items: ["09:00-12:00 富良野滑雪 (教練指導)", "雪場內午餐休息", "13:30-15:30 繼續滑雪課程", "富良野在地美食探訪"]},
+                    {d: "1/14 WED 雪場巡禮", items: ["神居滑雪場 或 キャンモア滑雪村", "雪場午餐", "滑雪活動 ➔ 前往王子飯店泡湯", "富良野整理行李 ➔ 休息"]},
+                    {d: "1/15 THU 景點/回札幌", items: ["美瑛：雲霄飛車之路 ➔ 白鬚瀑布", "美瑛午餐", "開車回札幌市區 ➔ 飯店入住", "市區逛街 ➔ 市區晚餐"]},
+                    {d: "1/16 FRI 返台", items: ["前往機場還車 ➔ 報到手續", "11:55 IT235 登機返台", "15:35 抵達桃園國際機場", "平安抵達溫暖的家"]}
+                ];
+                const labels = ["早", "中", "下午", "晚"];
+                days.forEach(day => {
+                    document.write(`<div class="section-title">${day.d}</div><div class="slot-container">`);
+                    day.items.forEach((item, i) => {
+                        document.write(`<div class="time-slot"><div class="fixed-label">${labels[i]}</div><div class="content-draggables"><div class="inner-content" contenteditable="false">${item}</div></div></div>`);
+                    });
+                    document.write(`</div>`);
+                });
+            </script>
         </div>
 
         <div id="ski" class="tab-content">
-            <div class="section-title">滑雪場資訊</div>
-            <div class="grid gap-3">
-                <div class="slot-container"><p class="font-bold">手稻滑雪場</p><a href="https://snowsapporo.com/tw/skiarea/teine/" target="_blank" class="nav-link-btn">官網</a></div>
-                <div class="slot-container"><p class="font-bold">盤溪滑雪場</p><a href="https://snowsapporo.com/tw/skiarea/bankei/" target="_blank" class="nav-link-btn">官網</a></div>
-                <div class="slot-container"><p class="font-bold text-sm">富良野滑雪場 (6,500円)</p></div>
-                <div class="slot-container"><p class="font-bold text-sm">神居滑雪場 (5,300円)</p></div>
-                <div class="slot-container"><p class="font-bold text-sm">キャンモア滑雪村 (3,000円)</p></div>
-            </div>
+            <div class="section-title">札幌區</div>
+            <div class="slot-container"><p class="text-sm font-black">手稻滑雪場</p><a href="https://snowsapporo.com/tw/skiarea/teine/" target="_blank" class="nav-link-btn">官方網站</a></div>
+            <div class="slot-container"><p class="text-sm font-black">盤溪滑雪場</p><a href="https://snowsapporo.com/tw/skiarea/bankei/" target="_blank" class="nav-link-btn">官方網站</a></div>
+            <div class="section-title">富良野 & 旭川</div>
+            <script>
+                const skiData = [{n:"富良野滑雪場", p:"6,500円"}, {n:"神居滑雪場", p:"5,300円"}, {n:"キャンモア滑雪村", p:"3,000円"}];
+                skiData.forEach(s => { document.write(`<div class="slot-container"><p class="text-sm font-black">${s.n}</p><p class="text-[11px] text-red-500 font-bold mt-1">${s.p}</p></div>`); });
+            </script>
         </div>
 
         <div id="food" class="tab-content">
             <div class="section-title">20 Restaurants</div>
-            <div class="grid grid-cols-1 gap-2">
-                <script>
-                    const foods = ["三光舍壽喜燒", "牛しゃぶ 禪", "Shabu Shabu LetUs", "Donguri Odori", "耀い", "焼肉徳寿 K-Place", "RAZAN Charcoal Wagyu", "根室花丸", "二條市場 丼兵衛", "二條市場 DONBURI茶屋", "二條市場 蟹工船", "麵屋 彩未", "純連 中之島", "吉山商店", "薄野 螃蟹亭", "薄野 雪華亭", "成吉思汗 達摩", "雪印冰淇淋", "市場食堂", "迴轉壽司 Toriton"];
-                    foods.forEach(f => document.write(`<div class="slot-container flex justify-between items-center"><p class="text-sm font-bold">${f}</p><a href="https://www.google.com/maps/search/${f}" class="text-blue-500 text-xs">MAP</a></div>`));
-                </script>
-            </div>
+            <script>
+                const foods = [{n:"三光舍壽喜燒", d:"老字號名店"}, {n:"牛しゃぶ 禪", d:"頂級涮涮鍋"}, {n:"Shabu Shabu LetUs", d:"精緻火鍋"}, {n:"Donguri Odori", d:"大通麵包"}, {n:"耀い", d:"帝王蟹吃到飽"}, {n:"焼肉徳寿 K-Place", d:"高品質燒肉"}, {n:"RAZAN Charcoal Wagyu", d:"炭火和牛"}, {n:"根室花丸", d:"熱門壽司"}, {n:"二條市場 丼兵衛", d:"50種海鮮丼"}, {n:"二條市場 DONBURI茶屋", d:"熟成海鮮"}, {n:"二條市場 蟹工船", d:"螃蟹蓋飯"}, {n:"麵屋 彩未", d:"味噌拉麵"}, {n:"純連 中之島", d:"濃醇味噌"}, {n:"吉山商店", d:"培煎胡麻味噌"}, {n:"薄野 螃蟹亭", d:"活蟹全餐"}, {n:"薄野 雪華亭", d:"松葉蟹涮涮鍋"}, {n:"成吉思汗 達摩", d:"必吃烤羊肉"}, {n:"雪印冰淇淋", d:"天皇御用"}, {n:"市場食堂", d:"平價定食"}, {n:"迴轉壽司 Toriton", d:"高評價壽司"}];
+                foods.forEach(f => { document.write(`<div class="slot-container flex justify-between items-center"><div><p class="text-sm font-bold">${f.n}</p><p class="text-[10px] text-gray-400">${f.d}</p></div><a href="http://googleusercontent.com/maps.google.com/search?q=${f.n}" target="_blank" class="text-blue-500 text-xs font-bold">MAP</a></div>`); });
+            </script>
         </div>
 
         <div id="spots" class="tab-content">
             <div class="section-title">8 Sightseeing</div>
             <script>
-                const spots = ["札幌 諏訪神社", "真駒內 靈園摩艾", "藻岩山展望台", "定山溪溫泉街", "豐平峽溫泉", "雲霄飛車之路", "白鬚瀑布", "精靈露台"];
-                spots.forEach(s => document.write(`<div class="slot-container flex justify-between items-center"><p class="text-sm font-bold">${s}</p><a href="https://www.google.com/maps/search/${s}" class="text-blue-500 text-xs">MAP</a></div>`));
+                const spots = [{n:"札幌 諏訪神社", d:"簍空御守"}, {n:"真駒內 靈園摩艾", d:"安藤忠雄設計"}, {n:"藻岩山展望台", d:"新三大夜景"}, {n:"定山溪溫泉街", d:"歷史聚落"}, {n:"豐平峽溫泉", d:"大型露天風呂"}, {n:"雲霄飛車之路", d:"絕美雪地公路"}, {n:"白鬚瀑布", d:"美瑛幻之藍"}, {n:"精靈露台", d:"森林木屋"}];
+                spots.forEach(s => { document.write(`<div class="slot-container flex justify-between items-center"><div><p class="text-sm font-bold">${s.n}</p><p class="text-[10px] text-gray-400">${s.d}</p></div><a href="http://googleusercontent.com/maps.google.com/search?q=${s.n}" target="_blank" class="nav-link-btn">導航</a></div>`); });
             </script>
         </div>
 
         <div id="shop" class="tab-content">
             <div class="section-title">9 Shopping Items</div>
             <script>
-                const shops = ["Furano Marche", "Montbell 東川店", "札幌松本清", "唐吉訶德 狸小路", "無印良品 PARCO", "狸小路 LION", "六花亭 札幌本店", "大丸札幌", "PARCO 札幌"];
-                shops.forEach(sh => document.write(`<div class="slot-container flex justify-between items-center"><p class="text-sm font-bold">${sh}</p><a href="https://www.google.com/maps/search/${sh}" class="text-blue-500 text-xs">MAP</a></div>`));
+                const shops = [{n:"Furano Marche", d:"當地名產"}, {n:"Montbell 東川店", d:"最大旗艦店"}, {n:"札幌松本清", d:"染髮產品"}, {n:"唐吉訶德 狸小路", d:"迷你相機"}, {n:"無印良品 PARCO", d:"線香系列"}, {n:"狸小路 LION", d:"百年居酒屋"}, {n:"六花亭 札幌本店", d:"萊姆葡萄餅"}, {n:"大丸札幌", d:"伴手禮"}, {n:"PARCO 札幌", d:"JUMP SHOP"}];
+                shops.forEach(sh => { document.write(`<div class="slot-container flex justify-between items-center"><div><p class="text-sm font-bold">${sh.n}</p><p class="text-[10px] text-gray-400">${sh.d}</p></div><a href="http://googleusercontent.com/maps.google.com/search?q=${sh.n}" target="_blank" class="text-blue-500 text-xs font-bold">MAP</a></div>`); });
             </script>
         </div>
 
         <div id="mapTab" class="tab-content">
             <div class="section-title">Travel Map</div>
-            <div class="w-full h-[450px] bg-gray-200 rounded-3xl flex items-center justify-center">地圖加載中...</div>
+            <div class="w-full h-[550px] rounded-3xl overflow-hidden border">
+                <iframe src="http://googleusercontent.com/maps.google.com/search?q=Hokkaido" width="100%" height="100%" style="border:0;"></iframe>
+            </div>
         </div>
 
         <div id="info" class="tab-content">
-            <div class="section-title">Hotel & Car</div>
-            <div class="slot-container space-y-2 text-sm font-bold">
-                <p>1/11 Sotetsu Fresa Inn</p>
-                <p>1/12-14 AIR FURANO</p>
-                <p>1/15 Via Inn Prime</p>
+            <div class="section-title">Hotel Nav</div>
+            <div class="slot-container space-y-4">
+                <p class="text-sm font-bold">1/11 Sotetsu Fresa Inn 札幌薄野</p>
+                <p class="text-sm font-bold text-[#8b7355]">1/12-14 AIR FURANO (富良野)</p>
+                <p class="text-sm font-bold">1/15 Via Inn Prime 札幌大通</p>
                 <hr>
-                <p class="text-[#8b7355]">租車：RC32461046608501466</p>
+                <p class="text-xs uppercase text-gray-400">Car Rental: RC32461046608501466</p>
             </div>
         </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-100 p-4 pb-10 z-50 flex justify-around items-center">
-        <button onclick="showTab('schedule')" class="nav-btn active"><i data-lucide="calendar" class="w-5 h-5"></i><span class="text-[8px]">行程</span></button>
-        <button onclick="showTab('ski')" class="nav-btn"><i data-lucide="mountain" class="w-5 h-5"></i><span class="text-[8px]">滑雪</span></button>
-        <button onclick="showTab('food')" class="nav-btn"><i data-lucide="utensils" class="w-5 h-5"></i><span class="text-[8px]">餐廳</span></button>
-        <button onclick="showTab('spots')" class="nav-btn"><i data-lucide="camera" class="w-5 h-5"></i><span class="text-[8px]">景點</span></button>
-        <button onclick="showTab('shop')" class="nav-btn"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[8px]">購物</span></button>
-        <button onclick="showTab('info')" class="nav-btn"><i data-lucide="info" class="w-5 h-5"></i><span class="text-[8px]">資訊</span></button>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t p-4 pb-10 z-50 flex justify-between">
+        <button onclick="showTab('schedule')" class="nav-btn active"><i data-lucide="calendar"></i><span class="text-[8px]">行程</span></button>
+        <button onclick="showTab('ski')" class="nav-btn"><i data-lucide="mountain"></i><span class="text-[8px]">滑雪</span></button>
+        <button onclick="showTab('food')" class="nav-btn"><i data-lucide="utensils"></i><span class="text-[8px]">餐廳</span></button>
+        <button onclick="showTab('spots')" class="nav-btn"><i data-lucide="camera"></i><span class="text-[8px]">景點</span></button>
+        <button onclick="showTab('shop')" class="nav-btn"><i data-lucide="shopping-bag"></i><span class="text-[8px]">購物</span></button>
+        <button onclick="showTab('mapTab')" class="nav-btn"><i data-lucide="map"></i><span class="text-[8px]">地圖</span></button>
+        <button onclick="showTab('info')" class="nav-btn"><i data-lucide="info"></i><span class="text-[8px]">資訊</span></button>
     </nav>
 
     <script>
@@ -168,13 +143,13 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            window.scrollTo(0, 0);
+            window.scrollTo(0,0);
         }
 
-        // 行程內容拖曳
-        const containers = document.querySelectorAll('.content-draggables');
-        containers.forEach(container => {
-            Sortable.create(container, {
+        // 初始化拖曳 (僅限內容格位)
+        const zones = document.querySelectorAll('.content-draggables');
+        zones.forEach(zone => {
+            Sortable.create(zone, {
                 group: 'hokkaido-items',
                 animation: 200,
                 ghostClass: 'sortable-ghost',
@@ -182,23 +157,21 @@
             });
         });
 
-        // 編輯模式切換
+        // 編輯模式開關
         let isEditMode = false;
         function toggleEditMode() {
             isEditMode = !isEditMode;
-            const contents = document.querySelectorAll('.inner-content');
             const schedule = document.getElementById('schedule');
+            const contents = document.querySelectorAll('.inner-content');
             
-            contents.forEach(content => {
-                content.contentEditable = isEditMode;
-            });
-
             if (isEditMode) {
                 schedule.classList.add('edit-mode-active');
-                alert("編輯模式已開啟，現在可以直接點擊文字進行修改。");
+                contents.forEach(c => c.contentEditable = "true");
+                alert("編輯模式已開啟，可修改行程文字。");
             } else {
                 schedule.classList.remove('edit-mode-active');
-                alert("編輯模式已關閉。");
+                contents.forEach(c => c.contentEditable = "false");
+                alert("已退出編輯模式並鎖定文字。");
             }
         }
     </script>
