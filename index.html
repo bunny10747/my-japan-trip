@@ -3,214 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hokkaido 2026</title>
+    <title>北海道自駕隨身 App v6.2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root { --bg: #fdfdfb; --card: #ffffff; --accent: #1a1a1a; --secondary: #737373; }
-        body { font-family: "PingFang TC", "Noto Sans TC", sans-serif; background-color: var(--bg); color: var(--accent); letter-spacing: 0.02em; }
-        .tab-content { display: none; padding-bottom: 120px; animation: fadeIn 0.4s ease; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background-color: #F3F4F6; color: #111827; }
+        .tab-content { display: none; padding: 12px; animation: fadeIn 0.2s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        /* 巧兒風極簡卡片 */
-        .card-item { background: var(--card); border-radius: 8px; padding: 20px; margin-bottom: 16px; border: 1px solid #f0f0ee; }
-        .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .section-title::after { content: ""; height: 1px; flex-grow: 1; background: #eeeeec; }
-        
-        /* 亮顯標籤 - 僅用粗體與底色，不加多餘文字 */
-        .highlight-code { background: #f5f5f4; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
-        .highlight-bold { font-weight: 800; border-bottom: 2px solid #e5e7eb; }
-
-        .nav-btn { color: #d4d4d4; transition: color 0.3s; }
-        .nav-btn.active { color: var(--accent); }
-        .nav-icon { width: 22px; height: 22px; }
-        
-        .desc-text { font-size: 12px; color: var(--secondary); line-height: 1.6; margin-top: 6px; }
+        .glass-card { background: white; border-radius: 12px; border: 1px solid #E5E7EB; margin-bottom: 10px; padding: 14px; position: relative; }
+        .nav-btn.active { color: #2563EB; font-weight: 800; }
+        .edit-mode [contenteditable="true"] { border: 1px dashed #3B82F6; padding: 4px; border-radius: 4px; background: #EFF6FF; min-height: 1em; }
+        .btn-add { width: 100%; border: 2px dashed #D1D5DB; padding: 10px; border-radius: 12px; color: #9CA3AF; font-size: 12px; margin-top: 10px; display: none; }
+        .edit-mode .btn-add { display: block; }
+        .meal-tag { font-size: 10px; padding: 2px 5px; border-radius: 4px; background: #FFEDD5; color: #9A3412; font-weight: bold; }
+        .photo-preview { width: 100%; border-radius: 8px; margin-top: 8px; object-fit: cover; max-height: 250px; display: none; }
+        .photo-preview.active { display: block; }
+        .info-label { font-size: 10px; color: #9CA3AF; font-weight: bold; text-transform: uppercase; }
+        .nav-link-btn { background: #F0F7FF; color: #2563EB; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+        .desc-text { font-size: 11px; color: #4B5563; line-height: 1.5; margin-top: 5px; white-space: pre-line; }
     </style>
 </head>
-<body class="max-w-md mx-auto">
+<body class="pb-40">
 
-    <header class="p-8 pt-12 pb-6 sticky top-0 bg-[#fdfdfb]/90 backdrop-blur-sm z-50">
-        <h1 class="text-2xl font-bold">Hokkaido Trip</h1>
-        <p class="text-[10px] text-neutral-400 font-bold tracking-[0.3em] uppercase mt-1">2026.01.11 — 01.16</p>
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 p-3 flex justify-between items-center px-4">
+        <h1 class="text-sm font-black tracking-widest uppercase">Hokkaido 2026</h1>
+        <button id="editToggle" onclick="toggleEditMode()" class="bg-gray-100 p-2 rounded-full text-gray-600">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+        </button>
     </header>
 
-    <main class="px-6" id="appMain">
+    <div id="saveBar" class="hidden fixed top-14 left-0 right-0 bg-blue-600 text-white text-[10px] p-2 text-center z-40">
+        編輯模式中 - 點擊右上角設定圖示儲存變更
+    </div>
+
+    <main class="max-w-md mx-auto" id="appMain">
         
         <div id="schedule" class="tab-content active">
-            <div class="section-title">Itinerary</div>
-            
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-1">1/11 SUN</p>
-                <div class="text-sm leading-relaxed" contenteditable="true">
-                    抵達機場後去租車，取車後前往飯店放行李(Sotetsu Fresa Inn Sapparo Susukino)，放完行李後吃午餐，結束後下午去定山溪泡溫泉!晚上回市區吃壽喜燒+市區逛街(唐吉訶德、PARCO札幌、松本清等)
+            <h2 class="text-lg font-bold mb-3 text-blue-700">🗓️ 每日行程規劃</h2>
+            <div id="scheduleList">
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm" contenteditable="true">Day 1 - 1/11 (日)</p>
+                    <div class="text-xs space-y-2 mt-2" contenteditable="true">
+                        <p>☀️ 上午: 10:55 抵達新千歲 ➔ 租車 ➔ 飯店放行李</p>
+                        <p><span class="meal-tag">午餐</span> 札幌市區</p>
+                        <p>☁️ 下午: 定山溪溫泉街泡湯</p>
+                        <p><span class="meal-tag">晚餐</span> 札幌市區壽喜燒</p>
+                        <p>🌙 晚上: 市區逛街 (唐吉、PARCO、松本清)</p>
+                    </div>
+                </div>
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm" contenteditable="true">Day 2 - 1/12 (一)</p>
+                    <div class="text-xs space-y-2 mt-2" contenteditable="true">
+                        <p>☀️ 上午: 滑雪場選一：<br>• 手稻 (車程40分，比較大)<br>• 盤溪 (車程20分，比較小)</p>
+                        <p><span class="meal-tag">午餐</span> 札幌市區或沿途</p>
+                        <p>☁️ 下午: 往富良野 Check-in</p>
+                        <p><span class="meal-tag">晚餐</span> 富良野市區</p>
+                        <p>🌙 晚上: 農夫市集買草莓 ➔ 精靈露台走走</p>
+                    </div>
+                </div>
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm" contenteditable="true">Day 3 - 1/13 (二)</p>
+                    <div class="text-xs space-y-2 mt-2" contenteditable="true">
+                        <p>☀️ 上午: 富良野滑雪 (教練課)</p>
+                        <p>☁️ 下午: 滑雪</p>
+                        <p>🌙 晚上: 體驗夜滑 ➔ 泡溫泉</p>
+                    </div>
+                </div>
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm" contenteditable="true">Day 4 - 1/14 (三)</p>
+                    <div class="text-xs space-y-2 mt-2" contenteditable="true">
+                        <p>☁️ 下午: 繼續滑雪</p>
+                        <p>🌙 晚上: 泡溫泉 (王子大飯店)</p>
+                    </div>
+                </div>
+                <div class="glass-card border-l-4 border-blue-600">
+                    <p class="font-bold text-sm" contenteditable="true">Day 5 - 1/15 (四)</p>
+                    <div class="text-xs space-y-2 mt-2" contenteditable="true">
+                        <p>☀️ 上午: 雲霄飛車之路 ➔ 白鬚瀑布</p>
+                        <p><span class="meal-tag">午餐</span> 札幌市區</p>
+                        <p>☁️ 下午晚上: 市區逛街</p>
+                    </div>
                 </div>
             </div>
-
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-1">1/12 MON</p>
-                <div class="text-sm leading-relaxed" contenteditable="true">
-                    起床後去札幌附近雪場滑半天(手稻或盤溪)，再開車去富良野check in (AIR FURANO)，傍晚到晚上去精靈露台走走，去農夫市集買草莓。
-                </div>
-            </div>
-
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-1">1/13 TUE - 1/14 WED</p>
-                <div class="text-sm leading-relaxed" contenteditable="true">
-                    1/13: 富良野滑雪 (教練課 9:00-12:00, 13:30-15:30)，晚上夜滑或泡溫泉。<br>
-                    1/14: 去神居滑雪場或キャンモアスキービレッジ，晚上泡溫泉(王子大飯店)。
-                </div>
-            </div>
-
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-1">1/15 THU - 1/16 FRI</p>
-                <div class="text-sm leading-relaxed" contenteditable="true">
-                    1/15: 早上雲霄飛車之路、白鬚瀑布，下午回札幌還車，晚上札幌市區逛街。<br>
-                    1/16: 早上起來吃完早餐後去機場最後採購，中午飛機回台灣。
-                </div>
-            </div>
-            
-            <button class="w-full py-4 border-2 border-dashed border-neutral-100 rounded-lg text-neutral-300 text-xs mb-4" onclick="addNewCard('schedule')">+ Add Note</button>
+            <button class="btn-add" onclick="addNewCard('scheduleList')">+ 新增行程備註</button>
         </div>
 
         <div id="food" class="tab-content">
-            <div class="section-title">Dining</div>
+            <h2 class="text-lg font-bold mb-3 text-orange-600">🍱 餐廳清單</h2>
             <div id="foodList">
                 <script>
-                    const foods = [
-                        {n:"三光舍壽喜燒 Sukiyaki Sankousha", d:"札幌老字號壽喜燒名店"},
-                        {n:"牛しゃぶ 牛すき 禪", d:"頂級牛涮涮鍋與壽喜燒料理"},
-                        {n:"Shabu Shabu LetUs Susukino Branch", d:"薄野精緻涮涮鍋"},
-                        {n:"Donguri Odori", d:"多人推麵包店，大通公園旁必買"},
-                        {n:"耀い", d:"帝王蟹吃到飽首選"},
-                        {n:"焼肉徳寿 K-Place", d:"高品質燒肉與優雅空間"},
-                        {n:"RAZAN Charcoal-Grilled Wagyu Yakiniku", d:"薄野店，炭火燒烤和牛燒肉"},
-                        {n:"根室花丸 COCONO SUSUKINO店", d:"鮮度一流的熱門迴轉壽司"},
-                        {n:"二條市場 丼兵衛", d:"菜單種類繁多，客人可從多達50種菜單中選擇自己喜愛的海鮮蓋飯"},
-                        {n:"二條市場 DONBURI茶屋", d:"熱賣10種配料「名物蓋飯」。另有黃金海寶蓋飯、奢華蓋飯等。推「極上熟成海鮮蓋飯」，職人將鮮魚熟成後凝聚美味。"},
-                        {n:"二條市場 螃蟹餐廳 蟹工船", d:"主打螃蟹蓋飯，有水煮蟹肉、鮭魚卵或海膽雙拼。還有生雪場蟹肉生魚片蓋飯。早上8點開始營業，推薦早餐享用。"},
-                        {n:"麵屋 彩未", d:"代表北海道味噌拉麵最高峰，造訪札幌必吃拉麵店"},
-                        {n:"純連 中之島本店", d:"湯頭濃醇味噌與炒豬肉香氣，豬油蔬菜鮮甜，叉燒放有薑泥，寒冬暖身必吃"},
-                        {n:"吉山商店 本店", d:"最熱銷「培煎胡麻味噌拉麵」。豚骨底加胡麻高湯，口感濃厚層次豐富，稱“進化版札幌拉麵”。"},
-                        {n:"薄野 螃蟹亭", d:"受歡迎「螃蟹全餐」，有活蟹生魚片、現煮水煮活蟹、烤雪場蟹。另有螃蟹燒賣、煎烤雪場蟹、奶油馬鈴薯。"},
-                        {n:"薄野 螃蟹與道產料理 雪華亭", d:"套餐中最愛「北海松葉蟹涮涮鍋」，鮮美滋味無法比擬"},
-                        {n:"薄野 成吉思汗 達摩 本店", d:"薄野名物料理。隱藏版：將吸滿肉汁醬汁的拌飯倒入焙茶做茶泡飯。"},
-                        {n:"雪印冰淇淋 札幌本店", d:"專為昭和天皇製作的冰淇淋「Snow Royal」，及30多種百匯。"},
-                        {n:"市場食堂 (市場定食)", d:"在地市場風格的平價豐富定食"},
-                        {n:"迴轉壽司 Toriton 旭神店", d:"知名高評價迴轉壽司店"}
+                    const foodData = [
+                        { n: "三光舍壽喜燒！Sukiyaki Sankousha", d: "札幌老字號壽喜燒名店" },
+                        { n: "牛しゃぶ 牛すき 禪", d: "頂級牛涮涮鍋與壽喜燒料理" },
+                        { n: "Shabu Shabu LetUs Susukino Branch", d: "薄野精緻涮涮鍋" },
+                        { n: "Donguri Odori", d: "多人推麵包店，大通公園旁必買" },
+                        { n: "耀い", d: "帝王蟹吃到飽首選" },
+                        { n: "焼肉徳寿 K-Place", d: "高品質燒肉與優雅空間" },
+                        { n: "RAZAN Charcoal-Grilled Wagyu Yakiniku", d: "薄野店，炭火燒烤和牛燒肉" },
+                        { n: "根室花丸 COCONO SUSUKINO店", d: "鮮度一流的熱門迴轉壽司" },
+                        { n: "二條市場 丼兵衛", d: "菜單種類繁多，客人可從多達50種菜單中選擇自己喜愛的海鮮蓋飯" },
+                        { n: "二條市場 DONBURI茶屋", d: "熱賣10種配料「名物蓋飯」。另有黃金海寶蓋飯、奢華蓋飯等。推「極上熟成海鮮蓋飯」，職人將鮮魚熟成後凝聚美味。" },
+                        { n: "二條市場 螃蟹餐廳 蟹工船", d: "主打螃蟹蓋飯，有水煮蟹肉、鮭魚卵或海膽雙拼。還有生雪場蟹肉生魚片蓋飯。早上8點開始營業，推薦早餐享用。" },
+                        { n: "麵屋 彩未", d: "代表北海道味噌拉麵最高峰，造訪札幌必吃拉麵店" },
+                        { n: "純連 中之島本店", d: "湯頭濃醇味噌與炒豬肉香氣，豬油蔬菜鮮甜，叉燒放有薑泥，寒冬暖身必吃" },
+                        { n: "吉山商店 本店", d: "最熱銷「培煎胡麻味噌拉麵」。豚骨底加胡麻高湯，口感濃厚層次豐富，稱“進化版札幌拉麵”。" },
+                        { n: "薄野 螃蟹亭", d: "受歡迎「螃蟹全餐」，有活蟹生魚片、現煮水煮活蟹、烤雪場蟹。另有螃蟹燒賣、煎烤雪場蟹、奶油馬鈴薯。" },
+                        { n: "薄野 螃蟹與道產料理 雪華亭", d: "套餐中最愛「北海松葉蟹涮涮鍋」，鮮美滋味無法比擬" },
+                        { n: "薄野 成吉思汗 達摩 本店", d: "薄野名物料理。隱藏版：將吸滿肉汁醬汁的拌飯倒入焙茶做茶泡飯。" },
+                        { n: "雪印冰淇淋 札幌本店", d: "專為昭和天皇製作的冰淇淋「Snow Royal」，及30多種百匯。" },
+                        { n: "市場食堂 (市場定食)", d: "在地市場風格的平價豐富定食" },
+                        { n: "迴轉壽司 Toriton 旭神店", d: "知名高評價迴轉壽司店" }
                     ];
-                    foods.forEach(f => {
+                    foodData.forEach(item => {
                         document.write(`
-                            <div class="card-item">
-                                <div class="flex justify-between items-start">
-                                    <p class="font-bold text-sm">${f.n}</p>
-                                    <a href="https://www.google.com/maps/search/${encodeURIComponent(f.n)}" class="text-neutral-300"><i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
-                                </div>
-                                <p class="desc-text">${f.d}</p>
+                            <div class="glass-card flex justify-between items-start">
+                                <div><p class="font-bold text-xs" contenteditable="true">${item.n}</p><p class="desc-text" contenteditable="true">${item.d}</p></div>
+                                <a href="https://www.google.com/maps/search/?api=1&query=札幌手稻滑雪場8{encodeURIComponent(item.n)}" target="_blank" class="nav-link-btn flex-shrink-0"><i data-lucide="navigation" class="w-3 h-3"></i>導航</a>
                             </div>
                         `);
                     });
                 </script>
             </div>
+            <button class="btn-add" onclick="addNewCard('foodList')">+ 新增餐廳</button>
+        </div>
+
+        <div id="shop" class="tab-content">
+            <h2 class="text-lg font-bold mb-3 text-green-600">🛍️ 購物 & 伴手禮</h2>
+            <div id="shopList">
+                <script>
+                    const shopData = [
+                        { n: "富良野農夫市集", d: "買草莓" },
+                        { n: "Montbell Daisetsu Higashikawa Store", d: "大型旗艦店" },
+                        { n: "松本清", d: "買利尻昆布染髮" },
+                        { n: "唐吉訶德", d: "買迷你相機" },
+                        { n: "無印良品 PARCO札幌店", d: "買線香" },
+                        { n: "狸小路2丁目", d: "有超過百年歷史，北海道最古老 BEER HALL「狸小路LION」，人氣深度景點。" },
+                        { n: "六花亭 札幌本店", d: "萊姆葡萄餅乾伴手禮店" },
+                        { n: "大丸札幌", d: "B1「Hoppe Town」：LeTAO起司蛋糕、ROYCE’巧克力、北菓樓米菓等名店齊聚。" }
+                    ];
+                    shopData.forEach(item => {
+                        document.write(`
+                            <div class="glass-card flex justify-between items-start">
+                                <div><p class="font-bold text-xs" contenteditable="true">${item.n}</p><p class="desc-text" contenteditable="true">${item.d}</p></div>
+                                <a href="https://www.google.com/maps/search/?api=1&query=札幌手稻滑雪場9{encodeURIComponent(item.n)}" target="_blank" class="nav-link-btn flex-shrink-0"><i data-lucide="navigation" class="w-3 h-3"></i>導航</a>
+                            </div>
+                        `);
+                    });
+                </script>
+            </div>
+            <button class="btn-add" onclick="addNewCard('shopList')">+ 新增購物點</button>
         </div>
 
         <div id="spots" class="tab-content">
-            <div class="section-title">Spots & Shopping</div>
-            <script>
-                const items = ["富良野農夫市集", "Montbell Daisetsu Higashikawa Store", "松本清", "唐吉訶德", "無印良品 PARCO札幌店", "狸小路2丁目", "六花亭 札幌本店", "大丸札幌地下1F Hoppe Town", "諏訪神社", "Makomanai Takino Cemetery", "PARCO札幌", "藻岩山", "定山溪溫泉街", "豐平峽溫泉", "雲霄飛車之路", "白鬚瀑布"];
-                items.forEach(i => {
-                    document.write(`<div class="card-item flex justify-between items-center"><span class="text-sm font-medium">${i}</span><i data-lucide="plus" class="w-3 h-3 text-neutral-200"></i></div>`);
-                });
-            </script>
+            <h2 class="text-lg font-bold mb-3 text-purple-600">📸 景點攻略</h2>
+            <div id="spotsList">
+                <script>
+                    const spotData = [
+                        { n: "諏訪神社", d: "買簍空御守" },
+                        { n: "Makomanai Takino Cemetery", d: "摩艾巨像" },
+                        { n: "PARCO札幌", d: "JUMP SHOP(少年JUMP周邊)、橡子共和國(吉卜力商品)" },
+                        { n: "藻岩山", d: "三大夜景" },
+                        { n: "定山溪溫泉街", d: "約150年前由修行僧美泉定山建造，歷史悠久。" },
+                        { n: "豐平峽溫泉", d: "唯一將源泉直接注入浴池，有日本最大露天浴池。" },
+                        { n: "雲霄飛車之路", d: "絕美自駕公路" },
+                        { n: "白鬚瀑布", d: "冬日美景" }
+                    ];
+                    spotData.forEach(item => {
+                        document.write(`
+                            <div class="glass-card flex justify-between items-start">
+                                <div><p class="font-bold text-xs" contenteditable="true">${item.n}</p><p class="desc-text" contenteditable="true">${item.d}</p></div>
+                                <a href="https://www.google.com/maps/search/?api=1&query=New+Chitose+Airport+Rent-a-car0{encodeURIComponent(item.n)}" target="_blank" class="nav-link-btn flex-shrink-0"><i data-lucide="navigation" class="w-3 h-3"></i>導航</a>
+                            </div>
+                        `);
+                    });
+                </script>
+            </div>
+            <button class="btn-add" onclick="addNewCard('spotsList')">+ 新增景點</button>
+        </div>
+
+        <div id="mapTab" class="tab-content">
+            <h2 class="text-lg font-bold mb-3 text-red-600">🗺️ 景點地圖</h2>
+            <div class="h-[500px] w-full rounded-xl overflow-hidden border">
+                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1J0vf6BMX9f5Jxqn-kRZBUYkOywqnrc0&ehbc=2E312F&noprof=1" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
         </div>
 
         <div id="info" class="tab-content">
-            <div class="section-title">Information</div>
+            <h2 class="text-lg font-bold mb-3 text-blue-800">ℹ️ 重要資訊</h2>
             
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-3 tracking-widest uppercase">Flights</p>
-                <div class="text-sm space-y-4">
-                    <div>
-                        <p class="text-xs text-neutral-400">1/11 TPE(T1) - CTS</p>
-                        <p class="font-bold">06:20 - 10:55 // IT234</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-neutral-400">1/16 CTS - TPE(T1)</p>
-                        <p class="font-bold">11:55 - 15:35 // IT235</p>
-                    </div>
+            <div class="glass-card">
+                <p class="info-label">✈️ 航班 (國際線航廈)</p>
+                <div class="text-xs space-y-2 mt-2" contenteditable="true">
+                    <p><b>1/11 IT234:</b> 06:20 TPE T1 ➔ 10:55 CTS</p>
+                    <p><b>1/16 IT235:</b> 11:55 CTS ➔ 15:35 TPE T1</p>
                 </div>
             </div>
 
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-3 tracking-widest uppercase">Car Rental</p>
-                <p class="text-xs text-neutral-500 mb-1">Rakuten Travel Rent-A-Car</p>
-                <p class="text-lg font-bold highlight-code">RC32461046608501466</p>
-                <div class="mt-4 p-4 bg-neutral-50 rounded text-xs leading-relaxed text-neutral-600">
-                    抵達後請前往國內航廈一樓3號到達口附近的租車櫃檯。辦理手續後，我們將送您前往租車辦公室。
+            <div class="glass-card">
+                <p class="info-label">🚗 租車預約</p>
+                <div class="text-xs mt-2 p-3 bg-blue-50 rounded-lg text-blue-800" contenteditable="true">
+                    <b>Rakuten Travel:</b> RC32461046608501466<br>
+                    位置：抵達後往「國內航廈1F」3號門櫃檯。
                 </div>
             </div>
 
-            <div class="card-item">
-                <p class="text-[10px] font-black text-neutral-300 mb-3 tracking-widest uppercase">Hotels</p>
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <div class="text-xs">
-                            <p class="text-neutral-400">1/11-12</p>
-                            <p class="font-bold">Sotetsu Fresa Inn Sapparo Susukino</p>
-                        </div>
-                        <a href="https://www.google.com/maps/search/Sotetsu+Fresa+Inn+Sapparo+Susukino" class="text-neutral-300"><i data-lucide="navigation" class="w-4 h-4"></i></a>
+            <div class="glass-card">
+                <p class="info-label">🏨 飯店導航</p>
+                <div class="space-y-3 mt-3">
+                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                        <div class="text-xs"><p class="font-bold">Sotetsu Fresa Inn</p><p class="text-[9px]">1/11-12</p></div>
+                        <a href="https://www.google.com/maps/search/定山溪溫泉" class="nav-link-btn"><i data-lucide="navigation" class="w-3 h-3"></i>導航</a>
                     </div>
-                    <div class="flex justify-between items-center border-t pt-4">
-                        <div class="text-xs">
-                            <p class="text-neutral-400">1/12-15</p>
-                            <p class="font-bold text-blue-600">AIR FURANO</p>
-                        </div>
-                        <a href="https://www.google.com/maps/search/AIR+FURANO" class="text-neutral-300"><i data-lucide="navigation" class="w-4 h-4"></i></a>
+                    <div class="flex justify-between items-center p-2 bg-blue-50 rounded-lg">
+                        <div class="text-xs text-blue-800"><p class="font-bold">AIR FURANO</p><p class="text-[9px]">1/12-15</p></div>
+                        <a href="https://www.google.com/maps/search/Sapporo+Teine" class="nav-link-btn"><i data-lucide="navigation" class="w-3 h-3"></i>導航</a>
                     </div>
-                    <div class="flex justify-between items-center border-t pt-4">
-                        <div class="text-xs">
-                            <p class="text-neutral-400">1/15-16</p>
-                            <p class="font-bold">Via inn Prime Sapporo Odori</p>
-                        </div>
-                        <a href="https://www.google.com/maps/search/Via+inn+Prime+Sapporo+Odori" class="text-neutral-300"><i data-lucide="navigation" class="w-4 h-4"></i></a>
+                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                        <div class="text-xs"><p class="font-bold">Via inn Prime</p><p class="text-[9px]">1/15-16</p></div>
+                        <a href="https://www.google.com/maps/search/Sapporo+bankei" class="nav-link-btn"><i data-lucide="navigation" class="w-3 h-3"></i>導航</a>
                     </div>
                 </div>
-            </div>
-
-            <div class="section-title mt-8">Map View</div>
-            <div class="rounded-xl overflow-hidden border border-neutral-100 mt-4">
-                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1J0vf6BMX9f5Jxqn-kRZBUYkOywqnrc0&ehbc=2E312F&noprof=1" width="100%" height="400" frameborder="0"></iframe>
             </div>
         </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-neutral-100 px-10 py-6 pb-10 z-50 flex justify-between items-center">
-        <button onclick="showTab('schedule')" class="nav-btn active"><i data-lucide="calendar" class="nav-icon"></i></button>
-        <button onclick="showTab('food')" class="nav-btn"><i data-lucide="utensils" class="nav-icon"></i></button>
-        <button onclick="showTab('spots')" class="nav-btn"><i data-lucide="search" class="nav-icon"></i></button>
-        <button onclick="showTab('info')" class="nav-btn"><i data-lucide="menu" class="nav-icon"></i></button>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 pb-10 z-50 flex justify-around shadow-lg">
+        <button onclick="showTab('schedule')" class="nav-btn flex flex-col items-center gap-1 active"><i data-lucide="calendar" class="w-5 h-5"></i><span class="text-[9px]">行程</span></button>
+        <button onclick="showTab('food')" class="nav-btn flex flex-col items-center gap-1"><i data-lucide="utensils" class="w-5 h-5"></i><span class="text-[9px]">餐廳</span></button>
+        <button onclick="showTab('shop')" class="nav-btn flex flex-col items-center gap-1"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[9px]">購物</span></button>
+        <button onclick="showTab('spots')" class="nav-btn flex flex-col items-center gap-1"><i data-lucide="map-pin" class="w-5 h-5"></i><span class="text-[9px]">景點</span></button>
+        <button onclick="showTab('mapTab')" class="nav-btn flex flex-col items-center gap-1"><i data-lucide="map" class="w-5 h-5"></i><span class="text-[9px]">地圖</span></button>
+        <button onclick="showTab('info')" class="nav-btn flex flex-col items-center gap-1"><i data-lucide="info" class="w-5 h-5"></i><span class="text-[9px]">資訊</span></button>
     </nav>
 
     <script>
+        let isEditMode = false;
         lucide.createIcons();
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            document.getElementById('appMain').classList.toggle('edit-mode');
+            document.getElementById('saveBar').classList.toggle('hidden');
+            if (!isEditMode) saveData();
+        }
+
+        function triggerFile(btn) { btn.previousElementSibling.click(); }
+
+        function handleImage(input, imgId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => { 
+                    const img = document.getElementById(imgId);
+                    img.src = e.target.result;
+                    img.classList.add('active');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addNewCard(containerId) {
+            const id = Date.now();
+            const html = `
+                <div class="glass-card">
+                    <p class="font-bold text-sm" contenteditable="true">新項目</p>
+                    <div class="text-xs mt-2" contenteditable="true">輸入描述...</div>
+                    <img src="" class="photo-preview" id="img-${id}">
+                    <input type="file" class="hidden" onchange="handleImage(this, 'img-${id}')">
+                    <button class="text-[10px] text-blue-500 mt-2" onclick="triggerFile(this)">📷 照片</button>
+                    <button class="absolute top-2 right-2 text-red-400" onclick="this.parentElement.remove()">✕</button>
+                </div>`;
+            document.getElementById(containerId).insertAdjacentHTML('beforeend', html);
+        }
 
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo(0,0);
         }
 
-        function addNewCard(tabId) {
-            const container = document.querySelector(`#${tabId}`);
-            const newCard = document.createElement('div');
-            newCard.className = 'card-item';
-            newCard.innerHTML = `<div class="text-sm" contenteditable="true">New Note...</div>`;
-            container.insertBefore(newCard, container.lastElementChild);
+        function saveData() {
+            localStorage.setItem('hokkaidoAppData_v6_2', document.getElementById('appMain').innerHTML);
         }
+
+        window.onload = () => {
+            const savedData = localStorage.getItem('hokkaidoAppData_v6_2');
+            if (savedData) document.getElementById('appMain').innerHTML = savedData;
+            lucide.createIcons();
+        };
     </script>
 </body>
 </html>
