@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>北海道 2026 最終攻略</title>
+    <title>北海道雪季自駕 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -12,24 +12,26 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .glass-card { background: white; border-radius: 12px; border: 1px solid #E5E7EB; margin-bottom: 10px; padding: 14px; }
-        .nav-btn.active { color: #2563EB; font-weight: 800; background: #DBEAFE; border-radius: 8px; }
+        .nav-btn.active { color: #2563EB; font-weight: 800; }
+        .nav-btn.active i { transform: scale(1.1); color: #2563EB; }
         .meal-tag { font-size: 10px; padding: 2px 5px; border-radius: 4px; background: #FFEDD5; color: #9A3412; font-weight: bold; }
         .desc-text { font-size: 11px; color: #4B5563; line-height: 1.4; margin-top: 5px; white-space: pre-line; }
-        .nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .info-label { font-size: 10px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.05em; }
+        .map-container { position: relative; width: 100%; padding-bottom: 150%; height: 0; overflow: hidden; border-radius: 12px; }
+        .map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
     </style>
 </head>
-<body class="pb-32">
+<body class="pb-36">
 
     <header class="sticky top-0 z-50 bg-white border-b border-gray-200 p-3 text-center">
-        <h1 class="text-sm font-black tracking-widest uppercase">Hokkaido Trip 2026</h1>
+        <h1 class="text-sm font-black tracking-widest uppercase">Hokkaido 2026</h1>
     </header>
 
     <main class="max-w-md mx-auto">
         
         <div id="schedule" class="tab-content active">
-            <h2 class="text-lg font-bold mb-3 px-1 text-blue-700">🗓️ 1/11 ~ 1/16 行程表</h2>
-            
-            <div class="space-y-3">
+            <h2 class="text-lg font-bold mb-3 text-blue-700">🗓️ 每日行程規劃</h2>
+            <div class="space-y-3" id="dailySchedule">
                 <div class="glass-card border-l-4 border-blue-600">
                     <p class="font-bold text-sm">Day 1 - 1/11 (日)</p>
                     <div class="text-xs space-y-2 mt-2">
@@ -40,20 +42,16 @@
                         <p>🌙 <b>晚上</b>: 札幌市區逛街</p>
                     </div>
                 </div>
-
                 <div class="glass-card border-l-4 border-blue-600">
                     <p class="font-bold text-sm">Day 2 - 1/12 (一)</p>
                     <div class="text-xs space-y-2 mt-2">
-                        <p>☀️ <b>上午</b>: 札幌雪場選一：<br>
-                        • <b>手稻</b> (車程40分，雪場較大)<br>
-                        • <b>盤溪</b> (車程20分，較小一點)</p>
+                        <p>☀️ <b>上午</b>: 札幌雪場選一：手稻(40分/大)、盤溪(20分/小)</p>
                         <p><span class="meal-tag">午餐</span> 札幌市區或沿途</p>
-                        <p>☁️ <b>下午</b>: 開車往富良野 Check-in (AIR FURANO)</p>
+                        <p>☁️ <b>下午</b>: 開車往富良野 Check-in</p>
                         <p><span class="meal-tag">晚餐</span> 富良野市區</p>
                         <p>🌙 <b>晚上</b>: 農夫市集買草莓 ➔ 精靈露台走走</p>
                     </div>
                 </div>
-
                 <div class="glass-card border-l-4 border-blue-600">
                     <p class="font-bold text-sm">Day 3 - 1/13 (二)</p>
                     <div class="text-xs space-y-2 mt-2">
@@ -64,7 +62,6 @@
                         <p>🌙 <b>晚上</b>: 體驗夜滑 ➔ 泡溫泉</p>
                     </div>
                 </div>
-
                 <div class="glass-card border-l-4 border-blue-600">
                     <p class="font-bold text-sm">Day 4 - 1/14 (三)</p>
                     <div class="text-xs space-y-2 mt-2">
@@ -75,7 +72,6 @@
                         <p>🌙 <b>晚上</b>: 泡溫泉 (王子大飯店)</p>
                     </div>
                 </div>
-
                 <div class="glass-card border-l-4 border-blue-600">
                     <p class="font-bold text-sm">Day 5 - 1/15 (四)</p>
                     <div class="text-xs space-y-2 mt-2">
@@ -85,7 +81,6 @@
                         <p><span class="meal-tag">晚餐</span> 札幌市區</p>
                     </div>
                 </div>
-
                 <div class="glass-card border-l-4 border-blue-600">
                     <p class="font-bold text-sm">Day 6 - 1/16 (五)</p>
                     <div class="text-xs space-y-2 mt-2">
@@ -97,7 +92,7 @@
         </div>
 
         <div id="food" class="tab-content">
-            <h2 class="text-lg font-bold mb-3 text-orange-600">🍱 所有餐廳清單</h2>
+            <h2 class="text-lg font-bold mb-3 text-orange-600">🍱 餐廳清單</h2>
             <div id="foodList" class="space-y-2"></div>
         </div>
 
@@ -110,69 +105,130 @@
             <h2 class="text-lg font-bold mb-3 text-purple-600">📸 景點 & 溫泉</h2>
             <div id="spotsList" class="space-y-2"></div>
         </div>
+
+        <div id="mapTab" class="tab-content">
+            <h2 class="text-lg font-bold mb-3 text-red-600">🗺️ 景點分佈地圖</h2>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1J0vf6BMX9f5Jxqn-kRZBUYkOywqnrc0&ehbc=2E312F&noprof=1"></iframe>
+            </div>
+        </div>
+
+        <div id="info" class="tab-content">
+            <h2 class="text-lg font-bold mb-3 text-blue-800">ℹ️ 重要旅遊資訊</h2>
+            
+            <div class="glass-card">
+                <p class="info-label">✈️ 航班資訊</p>
+                <div class="mt-2 space-y-2 text-sm">
+                    <div class="flex justify-between border-b pb-2">
+                        <span>1/11 IT234</span>
+                        <span class="font-bold">06:20 - 10:55</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>1/16 IT235</span>
+                        <span class="font-bold">11:55 - 15:35</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <p class="info-label">🚗 租車資訊</p>
+                <div class="mt-2 text-sm">
+                    <p class="font-bold text-blue-600">Rakuten Travel Rent-A-Car</p>
+                    <p class="mt-1">預訂編號：<span class="font-mono bg-gray-100 px-1">RC32461046608501466</span></p>
+                    <div class="mt-3 p-3 bg-blue-50 rounded-lg text-xs leading-relaxed text-blue-800">
+                        <b>取車指引：</b>抵達後請前往國內航廈一樓 3 號到達口附近的租車櫃檯。辦理手續後，我們將送您前往租車辦公室。
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <p class="info-label">🏨 飯店清單 (Booking)</p>
+                <div class="mt-2 space-y-3 text-sm">
+                    <div>
+                        <p class="text-[10px] text-gray-400">1/11 - 1/12</p>
+                        <p class="font-bold">Sotetsu Fresa Inn Sapparo Susukino</p>
+                    </div>
+                    <div class="border-t pt-2">
+                        <p class="text-[10px] text-gray-400">1/12 - 1/15</p>
+                        <p class="font-bold text-blue-600">AIR FURANO</p>
+                    </div>
+                    <div class="border-t pt-2">
+                        <p class="text-[10px] text-gray-400">1/15 - 1/16</p>
+                        <p class="font-bold">Via inn Prime Sapporo Odori</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 pb-8 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
-        <div class="nav-grid">
-            <button onclick="showTab('schedule')" class="nav-btn p-2 flex flex-col items-center gap-1 active">
-                <i data-lucide="calendar" class="w-5 h-5"></i><span class="text-[10px]">行程</span>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 pb-10 z-50">
+        <div class="flex justify-around items-center">
+            <button onclick="showTab('schedule')" class="nav-btn flex flex-col items-center gap-1 active">
+                <i data-lucide="calendar" class="w-5 h-5"></i><span class="text-[9px]">行程</span>
             </button>
-            <button onclick="showTab('food')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="utensils" class="w-5 h-5"></i><span class="text-[10px]">餐廳</span>
+            <button onclick="showTab('food')" class="nav-btn flex flex-col items-center gap-1">
+                <i data-lucide="utensils" class="w-5 h-5"></i><span class="text-[9px]">餐廳</span>
             </button>
-            <button onclick="showTab('shop')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[10px]">購物</span>
+            <button onclick="showTab('shop')" class="nav-btn flex flex-col items-center gap-1">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i><span class="text-[9px]">購物</span>
             </button>
-            <button onclick="showTab('spots')" class="nav-btn p-2 flex flex-col items-center gap-1">
-                <i data-lucide="map" class="w-5 h-5"></i><span class="text-[10px]">景點</span>
+            <button onclick="showTab('spots')" class="nav-btn flex flex-col items-center gap-1">
+                <i data-lucide="map-pin" class="w-5 h-5"></i><span class="text-[9px]">景點</span>
+            </button>
+            <button onclick="showTab('mapTab')" class="nav-btn flex flex-col items-center gap-1">
+                <i data-lucide="map" class="w-5 h-5"></i><span class="text-[9px]">地圖</span>
+            </button>
+            <button onclick="showTab('info')" class="nav-btn flex flex-col items-center gap-1">
+                <i data-lucide="info" class="w-5 h-5"></i><span class="text-[9px]">資訊</span>
             </button>
         </div>
     </nav>
 
     <script>
+        // 餐廳、購物、景點數據保持完整
         const foods = [
             { name: "三光舍壽喜燒 Sukiyaki Sankousha", desc: "札幌老字號壽喜燒名店" },
-            { name: "牛しゃぶ 牛すき 禪", desc: "提供頂級牛涮涮鍋與壽喜燒料理" },
-            { name: "Shabu Shabu LetUs Susukino Branch", desc: "位於薄野的精緻涮涮鍋店" },
-            { name: "Donguri Odori", desc: "多人推麵包店，大通公園旁必買" },
-            { name: "耀い (Kagayaki)", desc: "帝王蟹吃到飽，大口吃蟹的首選" },
+            { name: "牛しゃぶ 牛すき 禪", desc: "頂級牛涮涮鍋與壽喜燒料理" },
+            { name: "Shabu Shabu LetUs Susukino Branch", desc: "薄野精緻涮涮鍋" },
+            { name: "Donguri Odori", desc: "超人氣麵包店，大通公園旁必買" },
+            { name: "耀い (Kagayaki)", desc: "帝王蟹吃到飽首選" },
             { name: "焼肉徳寿 K-Place", desc: "高品質燒肉店，環境雅致" },
-            { name: "RAZAN Charcoal-Grilled Wagyu Yakiniku", desc: "薄野店，主打炭火燒烤和牛燒肉" },
-            { name: "根室花丸 COCONO SUSUKINO店", desc: "大人氣迴轉壽司，食材鮮度一流" },
-            { name: "二條市場 札幌 海鮮蓋飯 丼兵衛", desc: "菜單種類繁多，客人可從多達50種菜單中選擇自己喜愛的海鮮蓋飯" },
-            { name: "二條市場 DONBURI茶屋", desc: "熱賣10種配料『名物蓋飯』。另有黃金海寶蓋飯、奢華蓋飯等。推『極上熟成海鮮蓋飯』，職人將鮮魚熟成凝聚美味。" },
-            { name: "二條市場 螃蟹餐廳 蟹工船", desc: "主打螃蟹蓋飯，有水煮蟹肉、鮭魚卵或海膽雙拼。還有生雪場蟹肉生魚片蓋飯。早上8點開始營業。" },
-            { name: "麵屋 彩未", desc: "代表北海道味噌拉麵最高峰，造訪札幌必吃拉麵店" },
-            { name: "純連 中之島本店", desc: "湯頭有濃醇味噌與炒豬肉香氣，豬油蔬菜鮮甜，叉燒放有薑泥，寒冬暖身必吃" },
-            { name: "吉山商店 本店", desc: "最銷『培煎胡麻味噌拉麵』。豚骨底加胡麻高湯，口感濃厚層次豐富，稱“進化版札幌拉麵”。" },
-            { name: "薄野 螃蟹亭", desc: "受歡迎『螃蟹全餐』，有活蟹生魚片、現煮水煮活蟹、烤雪場蟹。另有螃蟹燒賣、煎烤雪場蟹、奶油馬鈴薯。" },
-            { name: "薄野 螃蟹與道產料理 雪華亭", desc: "套餐中最愛『北海松葉蟹涮涮鍋』，鮮美滋味無法比擬" },
-            { name: "薄野 成吉思汗 達摩 本店", desc: "薄野名物料理。隱藏版：將吸滿肉汁醬汁的拌飯倒入焙茶做茶泡飯。" },
-            { name: "雪印冰淇淋 札幌本店", desc: "專為昭和天皇製作的冰淇淋『Snow Royal』，及30多種百匯。" },
-            { name: "市場食堂 (市場定食)", desc: "在地市場風格的平價豐富定食" },
-            { name: "迴轉壽司 Toriton 旭神店", desc: "在地高評價熱門迴轉壽司店" }
+            { name: "RAZAN Charcoal-Grilled Wagyu Yakiniku", desc: "薄野店，炭火燒烤和牛燒肉" },
+            { name: "根室花丸 COCONO SUSUKINO店", desc: "鮮度一流的迴轉壽司" },
+            { name: "二條市場 丼兵衛", desc: "50種海鮮蓋飯可供挑選" },
+            { name: "二條市場 DONBURI茶屋", desc: "名物蓋飯、黃金海寶蓋飯。極上熟成海鮮蓋飯凝聚美味。" },
+            { name: "二條市場 螃蟹餐廳 蟹工船", desc: "螃蟹蓋飯專門店，早上8點開始營業。" },
+            { name: "麵屋 彩未", desc: "味噌拉麵最高峰，札幌必吃" },
+            { name: "純連 中之島本店", desc: "濃醇味噌與炒豬肉香氣，叉燒配薑泥暖身" },
+            { name: "吉山商店 本店", desc: "培煎胡麻味噌拉麵，濃厚口感進化版。" },
+            { name: "薄野 螃蟹亭", desc: "螃蟹全餐：活蟹生魚、水煮蟹、烤雪場蟹。" },
+            { name: "薄野 雪華亭", desc: "北海松葉蟹涮涮鍋，鮮美滋味無法比擬" },
+            { name: "薄野 成吉思汗 達摩 本店", desc: "薄野名物料理。推薦：肉汁焙茶茶泡飯。" },
+            { name: "雪印冰淇淋 札幌本店", desc: "昭和天皇專屬冰淇淋『Snow Royal』。" },
+            { name: "市場食堂 (市場定食)", desc: "在地市場風格定食" },
+            { name: "迴轉壽司 Toriton 旭神店", desc: "在地高評價迴轉壽司" }
         ];
 
         const shops = [
             { name: "富良野農夫市集", desc: "重要任務：買新鮮草莓" },
-            { name: "Montbell Daisetsu Higashikawa Store", desc: "超大 Montbell 戶外用品旗艦店" },
+            { name: "Montbell Daisetsu Higashikawa Store", desc: "戶外用品旗艦店" },
             { name: "松本清", desc: "購買：利尻昆布染髮" },
             { name: "唐吉訶德", desc: "購買：迷你相機" },
             { name: "無印良品 PARCO札幌店", desc: "購買：線香" },
-            { name: "狸小路2丁目", desc: "內有歷史超過百年、北海道最古老 BEER HALL『狸小路LION』。" },
-            { name: "六花亭 札幌本店", desc: "必購伴手禮：萊姆葡萄餅乾" },
-            { name: "大丸札幌地下1F Hoppe Town", desc: "伴手禮天堂：LeTAO起司蛋糕、ROYCE巧克力、北菓樓米菓等名產一次買齊。" }
+            { name: "狸小路2丁目", desc: "百年歷史 BEER HALL『狸小路LION』。" },
+            { name: "六花亭 札幌本店", desc: "伴手禮：萊姆葡萄餅乾" },
+            { name: "大丸札幌地下1F Hoppe Town", desc: "LeTAO、ROYCE、北菓樓等名產一次買齊。" }
         ];
 
         const spots = [
-            { name: "諏訪神社", desc: "購買夢幻的『簍空御守』" },
-            { name: "Makomanai Takino Cemetery", desc: "真駒內瀧野靈園，壯觀的摩艾巨像與大佛。" },
-            { name: "PARCO札幌 流行文化", desc: "JUMP SHOP (熱門漫畫人物)、橡子共和國 (吉卜力動畫商品)。" },
-            { name: "藻岩山", desc: "札幌知名夜景，俯瞰壯闊城市燈火。" },
-            { name: "定山溪溫泉街", desc: "150年歷史，修行僧美泉定山建造的悠久溫泉名地。" },
-            { name: "豐平峽溫泉", desc: "源泉直注浴池，擁有日本最大規模的露天浴池。" },
-            { name: "雲霄飛車之路", desc: "自駕聖地，體驗連續高低起伏的震撼美景。" },
-            { name: "白鬚瀑布", desc: "美瑛名景，冬日深藍水流與白雪交織極美。" }
+            { name: "諏訪神社", desc: "購買『簍空御守』" },
+            { name: "Makomanai Takino Cemetery", desc: "摩艾巨像與大佛。" },
+            { name: "PARCO札幌", desc: "JUMP SHOP、橡子共和國。" },
+            { name: "藻岩山", desc: "札幌知名夜景地。" },
+            { name: "定山溪溫泉街", desc: "150年歷史溫泉街。" },
+            { name: "豐平峽溫泉", desc: "源泉直注，最大露天浴池。" },
+            { name: "雲霄飛車之路", desc: "自駕聖地，震撼美景。" },
+            { name: "白鬚瀑布", desc: "美瑛名景，冬日深藍水流。" }
         ];
 
         function renderList(data, containerId) {
@@ -180,11 +236,8 @@
             data.forEach(item => {
                 container.innerHTML += `
                     <div class="glass-card flex justify-between items-start">
-                        <div class="pr-2">
-                            <p class="font-bold text-xs text-gray-800">${item.name}</p>
-                            <p class="desc-text">${item.desc}</p>
-                        </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}" target="_blank" class="p-1.5 bg-gray-100 text-gray-500 rounded-full flex-shrink-0">
+                        <div><p class="font-bold text-xs">${item.name}</p><p class="desc-text">${item.desc}</p></div>
+                        <a href="https://www.google.com/maps/d/u/0/embed?mid=1J0vf6BMX9f5Jxqn-kRZBUYkOywqnr{encodeURIComponent(item.name)}" target="_blank" class="p-1.5 bg-gray-100 text-gray-500 rounded-full flex-shrink-0">
                             <i data-lucide="navigation" class="w-4 h-4"></i>
                         </a>
                     </div>
