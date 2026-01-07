@@ -13,117 +13,108 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
     <style>
-        :root { --bg: #fdfcfb; --card: #ffffff; --accent: #4a4542; --soft-brown: #f7f3f0; --soft-grey: #f2f2f2; }
+        :root { --bg: #fdfcfb; --card: #ffffff; --accent: #4a4542; }
         body { font-family: "PingFang TC", "Noto Sans TC", sans-serif; background-color: var(--bg); color: var(--accent); user-select: none; -webkit-tap-highlight-color: transparent; }
         .tab-content { display: none; padding-bottom: 140px; animation: fadeIn 0.2s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* 拖曳中的樣式 */
         .sortable-ghost { opacity: 0.1; background: #8b7355 !important; }
-        .sortable-drag { opacity: 0.9; transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .slot-container { background: var(--card); border-radius: 18px; padding: 12px; margin-bottom: 15px; border: 1px solid #f0efed; }
+        .time-slot { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
+        .time-slot:last-child { border-bottom: none; }
+        .fixed-label { font-size: 10px; font-weight: 900; color: #b5ada8; width: 35px; text-align: center; flex-shrink: 0; }
 
-        /* 每個獨立行程項目的樣式 */
-        .time-item { 
-            background: var(--card); 
-            border-radius: 12px; 
-            padding: 14px; 
-            margin-bottom: 8px; 
-            border: 1px solid #f0efed; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            display: flex; 
-            align-items: flex-start; 
-            gap: 12px;
-            touch-action: none; /* 讓手機拖曳更靈敏 */
-        }
+        /* 內容拖曳區 */
+        .content-draggables { flex-grow: 1; min-height: 44px; display: flex; align-items: center; }
+        .inner-content { font-size: 14px; line-height: 1.4; padding: 10px 12px; background: #fff; border-radius: 8px; width: 100%; cursor: grab; transition: all 0.2s; border: 1px solid transparent; }
+        .inner-content:active { cursor: grabbing; border-color: #8b7355; background: #fdfcfb; }
         
-        .time-label { font-size: 10px; font-weight: 900; color: #b5ada8; width: 32px; flex-shrink: 0; padding-top: 3px; }
-        .time-text { font-size: 14px; line-height: 1.5; flex-grow: 1; }
-        
-        .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #b5ada8; margin: 24px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+        /* 輔助顏色 */
+        .c-1 { background: #f7f3f0; } /* 淺棕 */
+        .c-2 { background: #f2f2f2; } /* 淺灰 */
+
+        .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #b5ada8; margin: 24px 0 10px 0; display: flex; align-items: center; gap: 8px; }
         .section-title::after { content: ""; height: 1px; flex-grow: 1; background: #eee; }
         
         .nav-btn { color: #d4d4d4; transition: all 0.2s; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .nav-btn.active { color: #8b7355; font-weight: bold; }
         .nav-link-btn { background: #8b7355; color: white; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; display: inline-block; margin-top: 10px; }
-        .date-badge { font-size: 10px; background: #f2f2f2; color: #8b7355; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-        
-        /* 拖曳容器，給予一點最小高度方便拖入 */
-        .drag-zone { min-height: 50px; padding-bottom: 10px; }
     </style>
 </head>
 <body class="max-w-md mx-auto">
 
     <header class="p-6 pt-10 pb-4 sticky top-0 bg-[#fdfcfb]/95 backdrop-blur-md z-50 text-center">
         <h1 class="text-xl font-black tracking-tight text-[#5d5753]">HOKKAIDO 2026</h1>
-        <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase">全時段自由拖曳 v13.0</p>
+        <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase">內容抽換版 v13.8</p>
     </header>
 
     <main class="px-5">
         <div id="schedule" class="tab-content active">
             
             <div class="section-title">1/11 SUN 札幌入</div>
-            <div class="drag-zone">
-                <div class="time-item"><span class="time-label">早</span><p class="time-text">10:55 抵達新千歲 ➔ 租車櫃檯辦理</p></div>
-                <div class="time-item bg-[#f7f3f0]"><span class="time-label">中</span><p class="time-text">飯店放行李 ➔ 市區午餐</p></div>
-                <div class="time-item bg-[#f2f2f2]"><span class="time-label">下午</span><p class="time-text">定山溪溫泉街散策 ➔ 泡湯</p></div>
-                <div class="time-item"><span class="time-label">晚</span><p class="time-text">可考慮壽喜燒 ➔ 札幌市區購物</p></div>
+            <div class="slot-container">
+                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content">10:55 抵達新千歲 ➔ 租車櫃檯辦理</div></div></div>
+                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content c-1">飯店放行李 ➔ 市區午餐</div></div></div>
+                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content c-2">定山溪溫泉街散策 ➔ 泡湯</div></div></div>
+                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content">可考慮壽喜燒 ➔ 札幌市區購物</div></div></div>
             </div>
 
             <div class="section-title">1/12 MON 往富良野</div>
-            <div class="drag-zone">
-                <div class="time-item"><span class="time-label">早</span><p class="time-text">手稻/盤溪滑雪場 (半日滑雪)</p></div>
-                <div class="time-item bg-[#f7f3f0]"><span class="time-label">中</span><p class="time-text">回札幌市區或沿途午餐 ➔ 往富良野</p></div>
-                <div class="time-item bg-[#f2f2f2]"><span class="time-label">下午</span><p class="time-text">AIR FURANO Check-in ➔ 農夫市集 (買草莓🍓)</p></div>
-                <div class="time-item"><span class="time-label">晚</span><p class="time-text">精靈露台 ➔ 富良野市區晚餐</p></div>
+            <div class="slot-container">
+                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content">手稻/盤溪滑雪場 (半日滑雪)</div></div></div>
+                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content c-1">回札幌市區或沿途午餐 ➔ 往富良野</div></div></div>
+                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content c-2">AIR FURANO Check-in ➔ 農夫市集🍓</div></div></div>
+                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content">精靈露台 ➔ 富良野市區晚餐</div></div></div>
             </div>
 
             <div class="section-title">1/13 TUE 教練課</div>
-            <div class="drag-zone">
-                <div class="time-item"><span class="time-label">早</span><p class="time-text">09:00-12:00 富良野滑雪 (教練指導)</p></div>
-                <div class="time-item bg-[#f7f3f0]"><span class="time-label">中</span><p class="time-text">雪場內午餐休息</p></div>
-                <div class="time-item bg-[#f2f2f2]"><span class="time-label">下午</span><p class="time-text">13:30-15:30 繼續滑雪課程</p></div>
-                <div class="time-item"><span class="time-label">晚</span><p class="time-text">富良野在地美食探訪</p></div>
+            <div class="slot-container">
+                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content">09:00-12:00 富良野滑雪 (教練指導)</div></div></div>
+                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content c-1">雪場內午餐休息</div></div></div>
+                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content c-2">13:30-15:30 繼續滑雪課程</div></div></div>
+                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content">富良野在地美食探訪</div></div></div>
             </div>
 
             <div class="section-title">1/14 WED 雪場巡禮</div>
-            <div class="drag-zone">
-                <div class="time-item"><span class="time-label">早</span><p class="time-text">神居滑雪場 或 キャンモア滑雪村</p></div>
-                <div class="time-item bg-[#f7f3f0]"><span class="time-label">中</span><p class="time-text">雪場午餐</p></div>
-                <div class="time-item bg-[#f2f2f2]"><span class="time-label">下午</span><p class="time-text">滑雪活動 ➔ 前往王子飯店泡湯</p></div>
-                <div class="time-item"><span class="time-label">晚</span><p class="time-text">富良野整理行李 ➔ 休息</p></div>
+            <div class="slot-container">
+                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content">神居滑雪場 或 キャンモア滑雪村</div></div></div>
+                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content c-1">雪場午餐</div></div></div>
+                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content c-2">滑雪活動 ➔ 前往王子飯店泡湯</div></div></div>
+                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content">富良野整理行李 ➔ 休息</div></div></div>
             </div>
 
             <div class="section-title">1/15 THU 景點/回札幌</div>
-            <div class="drag-zone">
-                <div class="time-item"><span class="time-label">早</span><p class="time-text">美瑛：雲霄飛車之路 ➔ 白鬚瀑布</p></div>
-                <div class="time-item bg-[#f7f3f0]"><span class="time-label">中</span><p class="time-text">美瑛午餐</p></div>
-                <div class="time-item bg-[#f2f2f2]"><span class="time-label">下午</span><p class="time-text">開車回札幌市區 ➔ 飯店入住</p></div>
-                <div class="time-item"><span class="time-label">晚</span><p class="time-text">市區逛街 ➔ 市區晚餐</p></div>
+            <div class="slot-container">
+                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content">美瑛：雲霄飛車之路 ➔ 白鬚瀑布</div></div></div>
+                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content c-1">美瑛午餐</div></div></div>
+                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content c-2">開車回札幌市區 ➔ 飯店入住</div></div></div>
+                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content">市區逛街 ➔ 市區晚餐</div></div></div>
             </div>
 
             <div class="section-title">1/16 FRI 返台</div>
-            <div class="drag-zone">
-                <div class="time-item"><span class="time-label">早</span><p class="time-text">前往機場還車 ➔ 報到手續</p></div>
-                <div class="time-item bg-[#f7f3f0]"><span class="time-label">中</span><p class="time-text">11:55 IT235 登機返台</p></div>
-                <div class="time-item bg-[#f2f2f2]"><span class="time-label">下午</span><p class="time-text">15:35 抵達桃園國際機場</p></div>
-                <div class="time-item"><span class="time-label">晚</span><p class="time-text">平安抵達溫暖的家</p></div>
+            <div class="slot-container">
+                <div class="time-slot"><div class="fixed-label">早</div><div class="content-draggables"><div class="inner-content">前往機場還車 ➔ 報到手續</div></div></div>
+                <div class="time-slot"><div class="fixed-label">中</div><div class="content-draggables"><div class="inner-content c-1">11:55 IT235 登機返台</div></div></div>
+                <div class="time-slot"><div class="fixed-label">下午</div><div class="content-draggables"><div class="inner-content c-2">15:35 抵達桃園國際機場</div></div></div>
+                <div class="time-slot"><div class="fixed-label">晚</div><div class="content-draggables"><div class="inner-content">平安抵達溫暖的家</div></div></div>
             </div>
-            
-            <p class="text-center text-[10px] text-gray-400 mt-6 italic">💡 長按任何方塊即可在不同日期之間自由拖曳</p>
         </div>
 
-        <div id="food" class="tab-content">
-            <div class="section-title">Restaurants</div>
-            <div id="food-list"></div>
+        <div id="info" class="tab-content">
+            <div class="section-title">Hotel Info</div>
+            <div class="slot-container">
+                <p class="text-sm">1/11 Sotetsu Fresa Inn</p>
+                <p class="text-sm mt-2">1/12-14 AIR FURANO</p>
+                <p class="text-sm mt-2">1/15 Via Inn Prime</p>
+            </div>
         </div>
-        
     </main>
 
     <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-100 p-4 pb-10 z-50 flex justify-around items-center">
         <button onclick="showTab('schedule')" class="nav-btn active"><i data-lucide="calendar"></i><span class="text-[8px]">行程</span></button>
-        <button onclick="showTab('food')" class="nav-btn"><i data-lucide="utensils"></i><span class="text-[8px]">餐廳</span></button>
-        </nav>
+        <button onclick="showTab('info')" class="nav-btn"><i data-lucide="info"></i><span class="text-[8px]">資訊</span></button>
+    </nav>
 
     <script>
         lucide.createIcons();
@@ -134,16 +125,15 @@
             event.currentTarget.classList.add('active');
         }
 
-        // 初始化所有拖曳區，並允許它們互相交換
-        const zones = document.querySelectorAll('.drag-zone');
+        // 核心：初始化跨格位拖曳
+        const zones = document.querySelectorAll('.content-draggables');
         zones.forEach(zone => {
             Sortable.create(zone, {
-                group: 'hokkaido-trip', // 讓不同日期的 drag-zone 可以互相拖放
-                animation: 250,
+                group: 'hokkaido-items',
+                animation: 200,
                 ghostClass: 'sortable-ghost',
-                dragClass: 'sortable-drag',
-                forceFallback: true, // 手機必備
-                fallbackTolerance: 5
+                forceFallback: true,
+                fallbackTolerance: 3
             });
         });
     </script>
