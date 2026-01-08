@@ -19,7 +19,6 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* 拖曳與編輯樣式 */
         .sortable-ghost { opacity: 0.1; background: #8b7355 !important; }
         .slot-container { background: var(--card); border-radius: 18px; padding: 12px; margin-bottom: 15px; border: 1px solid #f0efed; }
         .time-slot { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
@@ -34,6 +33,11 @@
         .nav-btn { color: #d4d4d4; transition: all 0.2s; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .nav-btn.active { color: #8b7355; font-weight: bold; }
         .nav-link-btn { background: #8b7355; color: white; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; display: inline-block; margin-top: 10px; }
+        
+        /* 租車專用樣式 */
+        .info-card { font-size: 13px; line-height: 1.6; }
+        .info-label { color: #999; font-weight: bold; font-size: 11px; }
+        .info-value { color: #333; font-weight: 600; margin-bottom: 8px; }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -42,7 +46,7 @@
         <div class="w-10"></div>
         <div class="text-center">
             <h1 class="text-xl font-black tracking-tight text-[#5d5753]">HOKKAIDO 2026</h1>
-            <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase text-xs">Itinerary Updated</p>
+            <p class="text-[9px] text-[#b5ada8] font-bold tracking-widest uppercase text-xs">V16.2 Logistics</p>
         </div>
         <button onclick="toggleEditMode()" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full active:scale-95 transition-transform">
             <i data-lucide="settings-2" class="w-5 h-5 text-gray-600"></i>
@@ -114,13 +118,74 @@
         </div>
 
         <div id="info" class="tab-content">
-            <div class="section-title">Hotel & Car</div>
-            <div class="slot-container space-y-4 text-sm">
-                <p><b>1/11</b> Sotetsu Fresa Inn 札幌薄野</p>
-                <p class="text-[#8b7355]"><b>1/12-14</b> AIR FURANO (富良野)</p>
-                <p><b>1/15</b> Via Inn Prime 札幌大通</p>
-                <hr>
-                <p class="text-gray-400">RC32461046608501466</p>
+            <div class="section-title">🏨 飯店清單 (Hotels)</div>
+            <div class="slot-container space-y-5">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="info-label">1/11 (SUN)</p>
+                        <p class="text-sm font-bold">Sotetsu Fresa Inn 札幌薄野</p>
+                    </div>
+                    <a href="https://www.google.com/maps/search/Sotetsu+Fresa+Inn+Sapporo-Susukino" target="_blank" class="text-xs bg-gray-100 px-3 py-1 rounded-full font-bold">導航</a>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="info-label">1/12 - 1/14 (3 Nights)</p>
+                        <p class="text-sm font-bold text-[#8b7355]">AIR FURANO (富良野住宿)</p>
+                    </div>
+                    <a href="https://www.google.com/maps/search/AIR+FURANO" target="_blank" class="text-xs bg-gray-100 px-3 py-1 rounded-full font-bold">導航</a>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="info-label">1/15 (THU)</p>
+                        <p class="text-sm font-bold">Via Inn Prime 札幌大通</p>
+                    </div>
+                    <a href="https://www.google.com/maps/search/Via+Inn+Prime+Sapporo+Odor" target="_blank" class="text-xs bg-gray-100 px-3 py-1 rounded-full font-bold">導航</a>
+                </div>
+            </div>
+
+            <div class="section-title">🚗 租車詳細資訊 (Nippon Rent-A-Car)</div>
+            <div class="slot-container info-card">
+                <div class="bg-amber-50 p-3 rounded-xl mb-4 border border-amber-100">
+                    <p class="info-label text-amber-600">預訂編號 / 確認代碼</p>
+                    <p class="text-sm font-black">RC32461046608501466</p>
+                    <p class="text-sm font-black text-amber-800">8dmh8Ze7</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="info-label">取車時間</p>
+                        <p class="info-value">1/11 (日) 11:30</p>
+                    </div>
+                    <div>
+                        <p class="info-label">還車時間</p>
+                        <p class="info-value">1/16 (五) 07:30</p>
+                    </div>
+                </div>
+
+                <div class="mt-2">
+                    <p class="info-label">取車門市：新千歲機場</p>
+                    <p class="text-[12px] mb-1">北海道千歲市美美758-136</p>
+                    <p class="text-[12px] font-bold text-blue-600 mb-2">📞 050-1712-2970</p>
+                    <a href="https://travel.rakuten.com/cars/default/zh-hk/shop/7898" target="_blank" class="text-xs text-gray-500 underline">門市官網連結</a>
+                </div>
+
+                <hr class="my-4">
+                
+                <div class="flex justify-between items-center">
+                    <p class="info-label">費用總額 (現場付款)</p>
+                    <p class="text-lg font-black text-red-600">¥39,820</p>
+                </div>
+                <p class="text-[10px] text-gray-400">含：禁菸車、GPS導航、ETC裝置</p>
+
+                <div class="mt-4 p-3 bg-gray-50 rounded-xl border border-dashed">
+                    <p class="info-label">導航專用地圖代碼 (MAP CODE)</p>
+                    <p class="text-base font-black tracking-widest text-center">113 774 638</p>
+                </div>
+
+                <div class="mt-4 text-[11px] text-gray-500 leading-relaxed bg-blue-50/50 p-3 rounded-lg">
+                    <b>取車指南：</b><br>
+                    抵達國內航廈一樓 3 號到達口附近的租車櫃檯，辦理後搭乘接駁車（約 10-15 分鐘）前往辦公室。
+                </div>
             </div>
         </div>
     </main>
@@ -145,7 +210,6 @@
             window.scrollTo(0,0);
         }
 
-        // 初始化拖曳
         document.querySelectorAll('.content-draggables').forEach(zone => {
             Sortable.create(zone, {
                 group: 'hokkaido-items',
@@ -155,7 +219,6 @@
             });
         });
 
-        // 編輯模式
         let isEditMode = false;
         function toggleEditMode() {
             isEditMode = !isEditMode;
@@ -164,11 +227,9 @@
             if (isEditMode) {
                 schedule.classList.add('edit-mode-active');
                 contents.forEach(c => c.contentEditable = "true");
-                alert("編輯模式開啟：直接點選文字即可修改。");
             } else {
                 schedule.classList.remove('edit-mode-active');
                 contents.forEach(c => c.contentEditable = "false");
-                alert("已鎖定行程內容。");
             }
         }
     </script>
